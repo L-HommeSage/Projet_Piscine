@@ -149,6 +149,7 @@ class Vertex
         int pose_Y;
         int m_indice;
 
+
         /// Image
         std::string m_image;
 
@@ -323,17 +324,17 @@ class Graph
         void add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name="", int pic_idx=0 );
         void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
         std::vector<Vertex> getcopievertex(){return copievertex_graph;}
+        int getordre(){return m_ordre;}
 
 
-        void CHARGER_Graph_1();
-
-        void CHARGER_Graph_2();                     /// A Faire
-        void CHARGER_Graph_3();                     /// A Faire
+        void CHARGER_Graph_1(std::string fic1, std::string fic2);
 
         void effacer_sommet(int index);
         void effacer_arete(int index);
 
         void ajouter_sommet(Vertex sommet);
+
+        void update_aretes();
 
 
 
