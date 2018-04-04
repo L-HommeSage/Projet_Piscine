@@ -182,6 +182,7 @@ void Graph::CHARGER_Graph_1()
                 m_vertices[indice].pose_X=posex;
                 m_vertices[indice].pose_Y=posey;
                 m_vertices[indice].m_image=image;
+                m_vertices[indice].m_indice=indice;
             }
             fichier.close();
             }
@@ -202,7 +203,9 @@ void Graph::CHARGER_Graph_1()
                     if(poids!=0)
                     {
                         add_interfaced_edge(indice_arc, j, k, poids);
+
                         indice_arc++;
+
 
                     }
                 }
@@ -274,16 +277,15 @@ m_vertices[id_vert1].m_out.push_back(idx);
 m_vertices[id_vert2].m_in.push_back(idx);
 }
 
-
 void Graph::effacer_sommet(int eidx)
 {
-  int fin;
-  fin=m_edges.size();
-  for(int i(0);i<fin;i++)
+ copievertex_graph.push_back(m_vertices[eidx]);
+  for(auto &e: m_edges)
 {
-    if(m_edges[i].m_from==eidx || m_edges[i].m_to==eidx)
+    if(e.second.m_from==eidx || e.second.m_to==eidx)
     {
-        effacer_arete(i);
+        copieedge_graph.push_back(e.second);
+        effacer_arete(e.first);
     }
 }
 Vertex &remver=m_vertices.at(eidx);
@@ -295,28 +297,32 @@ if(m_interface && remver.m_interface)
 m_vertices.erase( eidx );
 }
 
-
 void Graph::effacer_arete(int eidx)
 {
-/// référence vers le Edge à enlever
-Edge &remed=m_edges.at(eidx);
 
-/// test : on a bien des éléments interfacés
+
+Edge &remed=m_edges.at(eidx);
 if (m_interface && remed.m_interface)
 {
     m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
 }
-/// Il reste encore à virer l'arc supprimé de la liste des entrants et sortants des 2 sommets to et from !
-/// References sur les listes de edges des sommets from et to
 std::vector<int> &vefrom = m_vertices[remed.m_from].m_out;
 std::vector<int> &veto = m_vertices[remed.m_to].m_in;
 vefrom.erase( std::remove( vefrom.begin(), vefrom.end(), eidx ), vefrom.end() );
 veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
-
-/// Le Edge ne nécessite pas non plus de delete car on n'a pas fait de new (sémantique par valeur)
-/// Il suffit donc de supprimer l'entrée de la map pour supprimer à la fois l'Edge et le EdgeInterface
-/// mais malheureusement ceci n'enlevait pas automatiquement l'interface top_edge en tant que child de main_box !
 m_edges.erase( eidx );
 }
+
+void Graph::ajouter_sommet(Vertex sommet)
+{
+    add_interfaced_vertex(sommet.m_indice, sommet.m_value, sommet.pose_X, sommet.pose_Y, sommet.m_image);
+    m_vertices[sommet.m_indice].pose_X=sommet.pose_X;
+    m_vertices[sommet.m_indice].pose_Y=sommet.pose_Y;
+    m_vertices[sommet.m_indice].m_image=sommet.m_image;
+    m_vertices[sommet.m_indice].m_indice=sommet.m_indice;
+    
+    
+}
+
 
 
