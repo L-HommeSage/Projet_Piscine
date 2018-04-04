@@ -156,12 +156,12 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 /// de chargement de fichiers par exemple.
 /// Bien sûr on ne veut pas que vos graphes soient construits
 /// "à la main" dans le code comme ça.
-void Graph::CHARGER_Graph_1()
+void Graph::CHARGER_Graph_1(string fic1, string fic2)
 {
     m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
     // La ligne précédente est en gros équivalente à :
     // m_interface = new GraphInterface(50, 0, 750, 600);
-    ifstream fichier("graph_1.txt", ios::in);
+    ifstream fichier(fic1, ios::in);
         if(fichier)
         {
             int indice;
@@ -190,7 +190,7 @@ void Graph::CHARGER_Graph_1()
                 cout << "Impossible d'ouvrir le fichier !" << endl;
 
 
-            ifstream fichier2("matrice_adj_graph_1.txt", ios::in);
+            ifstream fichier2(fic2, ios::in);
         if(fichier2)
         {
             double poids;
@@ -203,6 +203,7 @@ void Graph::CHARGER_Graph_1()
                     if(poids!=0)
                     {
                         add_interfaced_edge(indice_arc, j, k, poids);
+
 
                         indice_arc++;
 
@@ -280,6 +281,7 @@ m_vertices[id_vert2].m_in.push_back(idx);
 void Graph::effacer_sommet(int eidx)
 {
  copievertex_graph.push_back(m_vertices[eidx]);
+
   for(auto &e: m_edges)
 {
     if(e.second.m_from==eidx || e.second.m_to==eidx)
@@ -320,9 +322,31 @@ void Graph::ajouter_sommet(Vertex sommet)
     m_vertices[sommet.m_indice].pose_Y=sommet.pose_Y;
     m_vertices[sommet.m_indice].m_image=sommet.m_image;
     m_vertices[sommet.m_indice].m_indice=sommet.m_indice;
-    
-    
+
 }
+
+/*void Graph::update_aretes()
+{
+   bool ok(true);
+    for(int i(0);i<copieedge_graph.size();++i)
+    {
+        for(int j(0);j<copievertex_graph.size();++j)
+        {
+            if(copieedge_graph[i].m_from==copievertex_graph[j].m_indice || copieedge_graph[i].m_to==copievertex_graph[j].m_indice)
+            {
+                ok=false;
+            }
+
+        }
+        if(ok==true)
+        {
+            add_interfaced_edge(10, copieedge_graph[i].m_from, copieedge_graph[i].m_to, copieedge_graph[i].m_weight);
+        }
+
+
+
+    }
+}*/
 
 
 
