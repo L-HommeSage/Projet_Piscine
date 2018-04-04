@@ -79,7 +79,7 @@
 #include "grman/grman.h"
 
 /***************************************************
-                    VERTEX
+                    SOMMETS
 ****************************************************/
 
 class VertexInterface
@@ -148,8 +148,11 @@ class Vertex
         int pose_X;
         int pose_Y;
 
+        /// Image
         std::string m_image;
+
         /// Rythme de croissance
+
         double rythme_de_croissance;
 
         // Docu shared_ptr : https://msdn.microsoft.com/fr-fr/library/hh279669.aspx
@@ -174,7 +177,7 @@ class Vertex
 
 
 /***************************************************
-                    EDGE
+                    ARETES
 ****************************************************/
 
 class EdgeInterface
@@ -316,11 +319,15 @@ class Graph
         void add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name="", int pic_idx=0 );
         void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
 
-        /// Méthode spéciale qui construit un graphe arbitraire (démo)
-        /// Voir implémentation dans le .cpp
-        /// Cette méthode est à enlever et remplacer par un système
-        /// de chargement de fichiers par exemple.
-        void make_example();
+
+        void CHARGER_Graph_1();
+
+        void CHARGER_Graph_2();                     /// A Faire
+        void CHARGER_Graph_3();                     /// A Faire
+
+        void effacer_sommet(int index);
+        void effacer_arete(int index);
+
 
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
