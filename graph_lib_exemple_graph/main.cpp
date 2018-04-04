@@ -11,18 +11,26 @@ int main()
     /// Le nom du répertoire où se trouvent les images à charger
     grman::set_pictures_path("pics");
 
-    /// Un exemple de graphe
     Graph g;
-    g.CHARGER_Graph_1();
-    g.effacer_sommet(1);
-    g.effacer_sommet(0);
+    g.CHARGER_Graph_1("graph_2.txt","matrice_adj_graph_2.txt");
+    for(int i(0);i<g.getordre();i++)
+    {
+        g.effacer_sommet(i);
+    }
 
-    g.ajouter_sommet(g.getcopievertex()[0]);
-    g.ajouter_sommet(g.getcopievertex()[1]);
+    g.CHARGER_Graph_1("graph_1.txt","matrice_adj_graph_1.txt");
+     for(int i(0);i<g.getordre();i++)
+    {
+        g.effacer_sommet(i);
+    }
+    g.CHARGER_Graph_1("graph_2.txt","matrice_adj_graph_2.txt");
 
 
 
 
+    //g.ajouter_sommet(g.getcopievertex()[0]);
+    //g.ajouter_sommet(g.getcopievertex()[1]);
+    //g.update_aretes();
 
 
 
