@@ -179,6 +179,9 @@ void Graph::make_example()
                 fichier>>posey;
                 fichier>>image;
                 add_interfaced_vertex(indice, valeur, posex, posey, image);
+                m_vertices[indice].pose_X=posex;
+                m_vertices[indice].pose_Y=posey;
+                m_vertices[indice].m_image=image;
             }
             fichier.close();
             }
