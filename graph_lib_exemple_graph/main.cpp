@@ -14,7 +14,17 @@ int main()
     /// Un exemple de graphe
     Graph g;
     g.CHARGER_Graph_1();
+    g.effacer_sommet(1);
     g.effacer_sommet(0);
+
+    g.ajouter_sommet(g.getcopievertex()[0]);
+    g.ajouter_sommet(g.getcopievertex()[1]);
+
+
+
+
+
+
 
     /// Vous gardez la main sur la "boucle de jeu"
     /// ( contrairement à des frameworks plus avancés )
