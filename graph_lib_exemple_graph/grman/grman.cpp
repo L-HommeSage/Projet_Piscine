@@ -17,7 +17,7 @@
 namespace grman
 {
 
-// Permet de compiler en mode plein écran (décommenter)
+// Permet de compiler en mode plein Ã©cran (dÃ©commenter)
 #define MODE_GRAPHIQUE GFX_AUTODETECT_WINDOWED
 //#define MODE_GRAPHIQUE GFX_AUTODETECT_FULLSCREEN
 
@@ -91,7 +91,7 @@ BITMAP *get_picture(std::string pic_name)
         if (pic)
         {
             g_pic_names.insert( std::make_pair(pic_name, pic) );
-            std::cout << "Loaded " << pic_name << std::endl;
+            ///std::cout << "Loaded " << pic_name << std::endl;
         }
         else
         {
@@ -159,7 +159,7 @@ void init()
 
     srand(time(NULL));
 
-    /// Gestion des caractères accentués
+    /// Gestion des caractÃ¨res accentuÃ©s
     set_uformat(U_ASCII);
 
     allegro_init();
@@ -254,7 +254,7 @@ void rafraichir_clavier_souris()
 }
 
 
-/// Auxiliaires : compléments aux fonctions graphiques allegro
+/// Auxiliaires : complÃ©ments aux fonctions graphiques allegro
 
 void thick_line(BITMAP *bmp, int x1, int y1, int x2, int y2, int thickness, int color)
 {
