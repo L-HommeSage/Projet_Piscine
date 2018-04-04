@@ -156,7 +156,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 /// de chargement de fichiers par exemple.
 /// Bien sûr on ne veut pas que vos graphes soient construits
 /// "à la main" dans le code comme ça.
-void Graph::make_example()
+void Graph::CHARGER_Graph_1()
 {
     m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
     // La ligne précédente est en gros équivalente à :
@@ -209,9 +209,6 @@ void Graph::make_example()
             }
         }
             fichier2.close();
-            cout<<m_edges[0].m_from<<endl;
-            cout<<m_edges[0].m_to<<endl;
-            cout<<m_vertices[0].m_out[0];
 }
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
@@ -276,4 +273,50 @@ m_edges[idx].m_to = id_vert2;
 m_vertices[id_vert1].m_out.push_back(idx);
 m_vertices[id_vert2].m_in.push_back(idx);
 }
+
+
+void Graph::effacer_sommet(int eidx)
+{
+  int fin;
+  fin=m_edges.size();
+  for(int i(0);i<fin;i++)
+{
+    if(m_edges[i].m_from==eidx || m_edges[i].m_to==eidx)
+    {
+        effacer_arete(i);
+    }
+}
+Vertex &remver=m_vertices.at(eidx);
+if(m_interface && remver.m_interface)
+{
+    m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
+}
+
+m_vertices.erase( eidx );
+}
+
+
+void Graph::effacer_arete(int eidx)
+{
+/// référence vers le Edge à enlever
+Edge &remed=m_edges.at(eidx);
+
+/// test : on a bien des éléments interfacés
+if (m_interface && remed.m_interface)
+{
+    m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
+}
+/// Il reste encore à virer l'arc supprimé de la liste des entrants et sortants des 2 sommets to et from !
+/// References sur les listes de edges des sommets from et to
+std::vector<int> &vefrom = m_vertices[remed.m_from].m_out;
+std::vector<int> &veto = m_vertices[remed.m_to].m_in;
+vefrom.erase( std::remove( vefrom.begin(), vefrom.end(), eidx ), vefrom.end() );
+veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
+
+/// Le Edge ne nécessite pas non plus de delete car on n'a pas fait de new (sémantique par valeur)
+/// Il suffit donc de supprimer l'entrée de la map pour supprimer à la fois l'Edge et le EdgeInterface
+/// mais malheureusement ceci n'enlevait pas automatiquement l'interface top_edge en tant que child de main_box !
+m_edges.erase( eidx );
+}
+
 
