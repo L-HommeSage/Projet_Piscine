@@ -283,6 +283,9 @@ class GraphInterface
         /// Dans cette boite seront ajoutés des boutons de contrôle etc...
         grman::WidgetBox m_tool_box;
 
+        grman::WidgetCheckBox m_sauvegard;
+        grman::WidgetText m_legendesauvegarde;
+
 
         // A compléter éventuellement par des widgets de décoration ou
         // d'édition (boutons ajouter/enlever ...)
@@ -333,7 +336,8 @@ class Graph
         void effacer_sommet(int index);
         void effacer_arete(int index);
 
-        void ajouter_sommet(Vertex sommet);
+        void ajouter_sommet();
+        void ajouter_arete();
 
         void update_aretes();
 

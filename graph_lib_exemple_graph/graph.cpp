@@ -150,15 +150,20 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_main_box.set_dim(908,720);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
     m_main_box.set_bg_color(BLANCROSE);
+
+
+    /*m_top_box.add_child(m_sauvegard);
+    m_sauvegard.set_dim(20,20);
+    m_sauvegard.set_pos(200,572);
+    m_sauvegard.set_bg_color(ROUGE);
+
+    m_top_box.add_child(m_legendesauvegarde);
+    m_legendesauvegarde.set_message("<- Sauvegarde");
+    m_legendesauvegarde.set_pos(225, 580);
+    m_sauvegard.set_bg_color(ROUGE);*/
+
+
 }
-
-
-/// Méthode spéciale qui construit un graphe arbitraire (démo)
-/// Cette méthode est à enlever et remplacer par un système
-/// de chargement de fichiers par exemple.
-/// Bien sûr on ne veut pas que vos graphes soient construits
-/// "à la main" dans le code comme ça.
-
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
 void Graph::update()
@@ -181,7 +186,6 @@ void Graph::update()
         elt.second.post_update();
 
         m_ordre=m_vertices.size();
-
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -263,14 +267,42 @@ veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
 m_edges.erase( eidx );
 }
 
-void Graph::ajouter_sommet(Vertex sommet)
+void Graph::ajouter_sommet()
 {
-    add_interfaced_vertex(sommet.m_indice, sommet.m_value, sommet.pose_X, sommet.pose_Y, sommet.m_image);
-    m_vertices[sommet.m_indice].pose_X=sommet.pose_X;
-    m_vertices[sommet.m_indice].pose_Y=sommet.pose_Y;
-    m_vertices[sommet.m_indice].m_image=sommet.m_image;
-    m_vertices[sommet.m_indice].m_indice=sommet.m_indice;
+    int indice;
+    double valeur;
+    string image;
+    std::cout<<"saisir Indice: ";
+    std::cin>>indice;
+    std::cout<<endl;
+    cout<<"saisir valeur: ";
+    cin>>valeur;
+    std::cout<<endl;
+    std::cout<<"saisir image: ";
+    cin>>image;
+    std::cout<<endl;
+    image=image+".jpg";
 
+
+    add_interfaced_vertex(indice, valeur, 250, 250,image);
+
+}
+
+void Graph::ajouter_arete()
+{
+    int from,to;
+    double poids;
+     std::cout<<"saisir sommet de depart: ";
+    std::cin>>from;
+    std::cout<<endl;
+    cout<<"saisir sommet d arrive: ";
+    cin>>to;
+    std::cout<<endl;
+    cout<<"saisir poids de l arete: ";
+    cin>>poids;
+    std::cout<<endl;
+
+    add_interfaced_edge(m_edges.size()+1,from,to,poids);
 }
 void Graph::CHARGER_Graph_1(string fic1, string fic2)
 {
