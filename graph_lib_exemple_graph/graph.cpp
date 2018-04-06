@@ -409,15 +409,45 @@ void Graph::simulation()
     for(auto &vert : m_vertices)
     {
         double k=0;
+        double predation=0;
+        for(int i = 0; i < vert.second.m_in.size(); i++)
+        {
+
+            for(auto &ed : m_edges)
+            {
+
+                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
+                {
+                    k+=ed.second.m_weight*m_vertices[vert.second.m_in[i]].m_value;
+                }
+            }
+
+        vert.second.m_value += (0.0005*(vert.second.m_value*(1-(vert.second.m_value/k))));
+        }
+         if(k==0)
+        {
+            vert.second.m_value += (0.0005*(vert.second.m_value*(1-(vert.second.m_value/100))));
+        }
+
+
+
+    }
+}
+/*
+void Graph::simulation()
+{
+    for(auto &vert : m_vertices)
+    {
+        double k=0;
         for(int i = 0; i < vert.second.m_in.size(); i++)
         {
             for(auto &ed : m_edges)
             {
 
-                /*if(ed.first==vert.second.m_in[i])
+                if(ed.first==vert.second.m_in[i])
                 {
                     k += ed.second.m_weight*(m_vertices[i].m_value/10);
-                }*/
+                }
                 if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
                 {
 
@@ -433,6 +463,51 @@ void Graph::simulation()
 
     }
 }
+*/
 
+/*
+void Graph::simulation()
+{
+    for(auto &vert : m_vertices)
+    {
+        double k=0;
+        double N=0;
+        if(vert.second.m_in.size()==0)
+        {
+            for(int j=0; j< vert.second.m_out.size();++j)
+            {
+                for(auto &edges : m_edges)
+                {
+                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
+                    {
+                      N+=m_vertices[vert.second.m_out[j]].m_value;
+                      N/(vert.second.m_out.size()+1);
+                    }
+                }
+                vert.second.m_value+=(0.0005*(vert.second.m_value*(1-(N/vert.second.m_value))));
+            }
+        }
+        for(int i = 0; i < vert.second.m_in.size(); i++)
+        {
+
+            for(auto &ed : m_edges)
+            {
+
+                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
+                {
+                    k+=ed.second.m_weight;
+                    k/vert.second.m_in.size();
+                    N+=m_vertices[vert.second.m_in[i]].m_value;
+                    N/vert.second.m_in.size();
+
+
+                }
+            }
+            vert.second.m_value += 0.0005*(vert.second.m_value*(1-(k/N)));
+        }
+
+
+    }
+}*/
 
 

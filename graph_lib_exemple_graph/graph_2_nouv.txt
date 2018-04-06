@@ -1,9 +1,9 @@
 8
-0 20 741 458 herbe.jpg
-1 30 351 461 foret.jpg
-2 40 742 272 insecte.jpg
-3 10 527 0 aigle.jpg
-4 12 754 97 ecureil.jpg
-5 30 498 460 lapin.jpg
-6 50 149 52 renard.jpg
-7 40 154 240 rouge-gorge.jpg
+0 20 134 476 herbe.jpg
+1 30 669 474 foret.jpg
+2 40 468 448 insecte.jpg
+3 10 529 2 aigle.jpg
+4 12 378 199 ecureil.jpg
+5 30 145 254 lapin.jpg
+6 50 166 36 renard.jpg
+7 40 745 210 rouge-gorge.jpg
