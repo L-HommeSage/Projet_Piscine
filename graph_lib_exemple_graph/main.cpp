@@ -19,12 +19,6 @@ int main()
         int choix;
         int choix3;
 
-
-
-
-
-
-
     /// Vous gardez la main sur la "boucle de jeu"
     /// ( contrairement à des frameworks plus avancés )
     while ( !key[KEY_ESC] )
@@ -32,6 +26,7 @@ int main()
         /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
         while (ok==0)
         {
+             system("cls");
             cout<<"************BIENVENUE************"<<endl;
         cout<<endl;
         cout<<"Voulez-vous charger le graph :"<<endl;
@@ -47,10 +42,6 @@ int main()
         cout<<endl;
         ok++;
         }
-
-
-
-
 
 
         if (choix==1 && ok2==0)
@@ -95,8 +86,7 @@ int main()
             cout<<"( Apuyez sur F ): Effacer un sommet"<<endl;
             cout<<"( Apuyez sur S ): Sauvegarder le graph"<<endl;
             cout<<"( Apuyez sur T ): Etudier la forte connexite"<<endl;
-            cout<<"( Apuyez sur Y ): Run"<<endl;
-            cout<<"( Apuyez sur P ): Pause"<<endl;
+            cout<<"( Apuyez sur Y ): Simulation"<<endl;
             cout<<"( Apuyez sur I ): Retour"<<endl;
 
         cout<<endl;
@@ -160,15 +150,6 @@ int main()
                 ok=0;
                 ok2=0;
             }
-
-
-
-
-
-
-
-
-
 
         grman::mettre_a_jour();
     }
