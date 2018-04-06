@@ -420,7 +420,9 @@ void Graph::simulation()
                 }
             }
             if(k==0)
-                k=100;
+            {
+                vert.second.m_value += 0.5*vert.second.m_value;
+            }
             vert.second.m_value += 0.0005*(vert.second.m_value*(1-(vert.second.m_value/k)));
         }
 
