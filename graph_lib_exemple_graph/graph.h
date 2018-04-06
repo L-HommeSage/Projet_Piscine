@@ -341,6 +341,8 @@ class Graph
 
         void update_aretes();
 
+        void simulation();
+
 
 
 

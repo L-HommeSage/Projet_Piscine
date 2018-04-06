@@ -151,6 +151,13 @@ int main()
                 ok2=0;
             }
 
+            if(key[KEY_Y])
+            {
+
+                g.simulation();
+
+            }
+
         grman::mettre_a_jour();
     }
 
