@@ -413,6 +413,11 @@ void Graph::simulation()
         {
             for(auto &ed : m_edges)
             {
+
+                /*if(ed.first==vert.second.m_in[i])
+                {
+                    k += ed.second.m_weight*(m_vertices[i].m_value/10);
+                }*/
                 if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
                 {
 
