@@ -404,12 +404,103 @@ void Graph::SAUVEGARDER_GRAPH (string fic1, string fic2)
         cout << "Impossible d'ouvrir le fichier !" << endl;
 }
 
-void Graph::simulation()
+void Graph::Marche_ecosysteme()
 {
+    std::map<int,double> valeurs;
+    double valeur;
+
     for(auto &vert : m_vertices)
     {
         double k=0;
         double predation=0;
+        bool pred=false;
+        for (auto &ed : m_edges)
+        {
+            if( ed.second.m_to==vert.first)
+            {
+                k+=ed.second.m_weight*0.01*m_vertices[ed.second.m_from].m_value;
+                pred=true;
+            }
+            if(ed.second.m_from==vert.first)
+            {
+                predation+=ed.second.m_weight*0.01*m_vertices[ed.second.m_to].m_value;
+            }
+        }
+        if(k==0 && pred==false)
+        {
+            k=100;
+             ///predation=predation*(7/8);
+        }
+
+        if(k==0 && pred==true)
+        {
+            k=0.1;
+        }
+
+
+        //cout<<vert.second.m_value<<endl;
+
+        valeur = vert.second.m_value+0.05*(vert.second.m_value*(1-vert.second.m_value/k)-predation);
+        //cout<<predation<<endl;
+        valeurs.insert(std::make_pair(vert.first,valeur));
+        cout<<valeur<<" "<<predation<<" "<<k<<endl;
+    }
+    for( auto &valor: valeurs)
+    {
+        for (auto &vertices : m_vertices)
+        {
+            if(vertices.first == valor.first)
+            {
+                vertices.second.m_value=valor.second;
+            }
+        }
+    }
+
+
+
+rest(25);
+
+}
+/*
+void Graph::Marche_ecosysteme()
+{
+    std::map<int,double> valeurs;
+    double valeur;
+    for(auto &vert : m_vertices)
+    {
+        double k=0;
+        double predation=0;
+         if(vert.second.m_in.size()==0)
+        {
+            for(int j=0; j< vert.second.m_out.size();++j)
+            {
+                for(auto &edges : m_edges)
+                {
+                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
+                    {
+                      predation+=edges.second.m_weight*m_vertices[vert.second.m_out[j]].m_value;
+
+                    }
+                }
+                 ///valeurs[i]=(vert.second.m_value + (0.0005*(vert.second.m_value*(1-(vert.second.m_value/100))))-(0.0005*predation));
+                 ///i++;
+                 vert.second.m_value=(vert.second.m_value + (0.0005*vert.second.m_value)*(1-(vert.second.m_value/100)))-(0.0005*predation);
+
+            }
+        }
+        else
+        {
+            /*for(int j=0; j< vert.second.m_out.size();++j)
+            {
+                for(auto &edges : m_edges)
+                {
+                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
+                    {
+                      predation+=edges.second.m_weight*m_vertices[vert.second.m_out[j]].m_value;
+
+                    }
+                }
+            }*//*
         for(int i = 0; i < vert.second.m_in.size(); i++)
         {
 
@@ -418,22 +509,38 @@ void Graph::simulation()
 
                 if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
                 {
-                    k+=ed.second.m_weight*m_vertices[vert.second.m_in[i]].m_value;
+                    k=k+(ed.second.m_weight*m_vertices[vert.second.m_in[i]].m_value);
                 }
             }
 
-        vert.second.m_value += (0.0005*(vert.second.m_value*(1-(vert.second.m_value/k))));
+        ///valeurs[i]=((vert.second.m_value+(0.0005*(vert.second.m_value*(1-(vert.second.m_value/k)))))-(0.0005*predation));
+        ///i++;
+       /// cout<<vert.first<<" "<<vert.second.m_value+(0.0005*(vert.second.m_value*(1-(vert.second.m_value/k))))<<" "<<0.0005*predation<<" "<<vert.second.m_value/k<<endl;
+        vert.second.m_value=((vert.second.m_value+(0.0005*vert.second.m_value)*(1-(vert.second.m_value/k))))/*-(0.0005*predation)*/;/*
+
         }
-         if(k==0)
-        {
-            vert.second.m_value += (0.0005*(vert.second.m_value*(1-(vert.second.m_value/100))));
         }
-
-
-
+    }*/
+    /*
+    for(int j=0;j<m_vertices.size();j++)
+    {
+        cout<<m_vertices[j].m_value<<endl;
     }
+    cout<<"ok"<<endl;
+    for(int j=0;j<valeurs.size();j++)
+    {
+        cout<<valeurs[j]<<endl;
+    }
+    cout<<"fin"<<endl;
+    int z=0;
+    for(auto &vertex: m_vertices)
+    {
+        vertex.second.m_value=valeurs[z];
+        z++;
+    }
+
 }
-/*
+
 void Graph::simulation()
 {
     for(auto &vert : m_vertices)
@@ -496,9 +603,7 @@ void Graph::simulation()
                 if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
                 {
                     k+=ed.second.m_weight;
-                    k/vert.second.m_in.size();
                     N+=m_vertices[vert.second.m_in[i]].m_value;
-                    N/vert.second.m_in.size();
 
 
                 }
@@ -508,6 +613,27 @@ void Graph::simulation()
 
 
     }
-}*/
-
+}
+*/
+/*
+for(unsigned int i (0); i<vert.second.m_in.size();++i)
+        {
+            for(auto &edges : m_edges)
+                {
+                    if(edges.second.m_from == vert.second.m_in[i] && edges.second.m_to == vert.first)
+                    {
+                        k+=edges.second.m_weight*0.01*m_vertices[edges.second.m_from].m_value;
+                    }
+                }
+        }
+        for(unsigned j(0); j<vert.second.m_out.size();++j)
+        {
+            for(auto &edges : m_edges)
+            {
+                if(edges.second.m_to ==  vert.second.m_out[j] && edges.second.m_from == vert.first)
+                {
+                    predation+=edges.second.m_weight*0.01*m_vertices[edges.second.m_to].m_value;
+                }
+            }
+        }*/
 

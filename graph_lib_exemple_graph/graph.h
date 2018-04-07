@@ -341,7 +341,7 @@ class Graph
 
         void update_aretes();
 
-        void simulation();
+        void Marche_ecosysteme();
 
 
 

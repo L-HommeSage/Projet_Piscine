@@ -154,7 +154,7 @@ int main()
             if(key[KEY_Y])
             {
 
-                g.simulation();
+                g.Marche_ecosysteme();
 
             }
 
