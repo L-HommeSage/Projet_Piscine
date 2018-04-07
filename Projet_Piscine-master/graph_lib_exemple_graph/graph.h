@@ -306,10 +306,12 @@ class Graph
         /// La "liste" des arêtes
         std::map<int, Edge> m_edges;
         std::vector<Edge> copieedge_graph;
+        std::map<int, Edge> m_edges_reduit;
 
         /// La liste des sommets
         std::map<int, Vertex> m_vertices;
         std::vector<Vertex> copievertex_graph;
+        std::map<int, Vertex> m_vertices_reduit;
 
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<GraphInterface> m_interface = nullptr;
@@ -329,6 +331,8 @@ class Graph
 
         void add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name="", int pic_idx=0 );
         void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
+        void add_interfaced_vertex_reduit(int idx, double value, int x, int y, std::string pic_name="", int pic_idx=0 );
+        void add_interfaced_edge_reduit(int idx, int vert1, int vert2, double weight=0);
         std::vector<Vertex> getcopievertex(){return copievertex_graph;}
         int getordre(){return m_ordre;}
 
@@ -352,6 +356,12 @@ class Graph
 
         void marquerSommets();
 
+        void cacher_graph();
+        void afficher_graph();
+
+        void cacher_graph_reduit();
+
+        void creer_graph_reduit();
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
         void update();
