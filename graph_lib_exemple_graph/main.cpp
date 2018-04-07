@@ -30,10 +30,10 @@ int main()
             cout<<"************BIENVENUE************"<<endl;
         cout<<endl;
         cout<<"Voulez-vous charger le graph :"<<endl;
-        cout<<"  1: Cycle de l'eau"<<endl;
+        cout<<"  1: Meteo"<<endl;
         cout<<"  2: Ecosysteme de la foret"<<endl;
         cout<<"  3: Ecosysteme marin"<<endl;
-        cout<<"  4: Sauvegarde: Cycle de l'eau"<<endl;
+        cout<<"  4: Sauvegarde: Meteo"<<endl;
         cout<<"  5: Sauvegarde: Ecosysteme de la foret"<<endl;
         cout<<"  6: Sauvegarde: Ecosysteme marin"<<endl;
 
@@ -85,9 +85,10 @@ int main()
             cout<<"( Apuyez sur R ): Ajouter une arete"<<endl;
             cout<<"( Apuyez sur F ): Effacer un sommet"<<endl;
             cout<<"( Apuyez sur S ): Sauvegarder le graph"<<endl;
-            cout<<"( Apuyez sur T ): Etudier la forte connexite"<<endl;
             cout<<"( Apuyez sur Y ): Simulation"<<endl;
+            cout<<"( Apuyez sur C ): Composantes fortement connexes"<<endl;
             cout<<"( Apuyez sur I ): Retour"<<endl;
+
 
         cout<<endl;
         ok2++;
@@ -133,7 +134,7 @@ int main()
                 {
                     g.SAUVEGARDER_GRAPH("graph_2_nouv.txt","matrice_adj_graph_2_nouv.txt");
                 }
-                if(choix==3)
+                if(choix==6)
                 {
                     g.SAUVEGARDER_GRAPH("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
                 }
@@ -155,6 +156,11 @@ int main()
             {
 
                 g.Marche_ecosysteme();
+
+            }
+            if(key[KEY_C])
+            {
+                g.toutesLesComposantesFortementConnexes();
 
             }
 

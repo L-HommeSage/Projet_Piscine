@@ -14,7 +14,7 @@ VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, in
 
     // Le slider de réglage de valeur
     m_top_box.add_child( m_slider_value );
-    m_slider_value.set_range(0.0 , 100.0); // Valeurs arbitraires, à adapter...
+    m_slider_value.set_range(0.0, 100.0);  // Valeurs arbitraires, à adapter...
     m_slider_value.set_dim(20,80);
     m_slider_value.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
 
@@ -94,7 +94,7 @@ EdgeInterface::EdgeInterface(Vertex& from, Vertex& to)
 
     // Le slider de réglage de valeur
     m_box_edge.add_child( m_slider_weight );
-    m_slider_weight.set_range(0.0 , 100.0); // Valeurs arbitraires, à adapter...
+    m_slider_weight.set_range(0.0, 100.0);  // Valeurs arbitraires, à adapter...
     m_slider_weight.set_dim(16,40);
     m_slider_weight.set_gravity_y(grman::GravityY::Up);
 
@@ -126,6 +126,7 @@ void Edge::post_update()
 
     /// Reprendre la valeur du slider dans la donnée m_weight locale
     m_weight = m_interface->m_slider_weight.get_value();
+    if(m_weight==0) m_weight=0.01;
 }
 
 
@@ -185,7 +186,7 @@ void Graph::update()
     for (auto &elt : m_edges)
         elt.second.post_update();
 
-        m_ordre=m_vertices.size();
+    m_ordre=m_vertices.size();
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -230,40 +231,40 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
 
 void Graph::effacer_sommet(int eidx)
 {
- copievertex_graph.push_back(m_vertices[eidx]);
+    copievertex_graph.push_back(m_vertices[eidx]);
 
 
-  for(auto &e: m_edges)
-{
-    if(e.second.m_from==eidx || e.second.m_to==eidx)
+    for(auto &e: m_edges)
     {
-        copieedge_graph.push_back(e.second);
-        effacer_arete(e.first);
+        if(e.second.m_from==eidx || e.second.m_to==eidx)
+        {
+            copieedge_graph.push_back(e.second);
+            effacer_arete(e.first);
+        }
     }
-}
-Vertex &remver=m_vertices.at(eidx);
-if(m_interface && remver.m_interface)
-{
-    m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
-}
+    Vertex &remver=m_vertices.at(eidx);
+    if(m_interface && remver.m_interface)
+    {
+        m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
+    }
 
-m_vertices.erase( eidx );
+    m_vertices.erase( eidx );
 }
 
 void Graph::effacer_arete(int eidx)
 {
 
 
-Edge &remed=m_edges.at(eidx);
-if (m_interface && remed.m_interface)
-{
-    m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
-}
-std::vector<int> &vefrom = m_vertices[remed.m_from].m_out;
-std::vector<int> &veto = m_vertices[remed.m_to].m_in;
-vefrom.erase( std::remove( vefrom.begin(), vefrom.end(), eidx ), vefrom.end() );
-veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
-m_edges.erase( eidx );
+    Edge &remed=m_edges.at(eidx);
+    if (m_interface && remed.m_interface)
+    {
+        m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
+    }
+    std::vector<int> &vefrom = m_vertices[remed.m_from].m_out;
+    std::vector<int> &veto = m_vertices[remed.m_to].m_in;
+    vefrom.erase( std::remove( vefrom.begin(), vefrom.end(), eidx ), vefrom.end() );
+    veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
+    m_edges.erase( eidx );
 }
 
 void Graph::ajouter_sommet()
@@ -290,7 +291,7 @@ void Graph::ajouter_arete()
 {
     int from,to;
     double poids;
-     std::cout<<"saisir sommet de depart: ";
+    std::cout<<"saisir sommet de depart: ";
     std::cin>>from;
     std::cout<<endl;
     cout<<"saisir sommet d arrive: ";
@@ -306,60 +307,63 @@ void Graph::CHARGER_Graph_1(string fic1, string fic2)
 {
     m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
     ifstream fichier(fic1, ios::in);
-        if(fichier)
+    if(fichier)
+    {
+        int indice;
+        double valeur;
+        int posex,posey;
+        string image;
+        int ordre;
+        fichier>>ordre;
+        m_ordre=ordre;
+
+        for(int i(0); i<ordre; ++i)
         {
-            int indice;
-            double valeur;
-            int posex,posey;
-            string image;
-            int ordre;
-            fichier>>ordre;
-            m_ordre=ordre;
-            for(int i(0); i<ordre;++i)
-            {
-                fichier>>indice;
-                fichier>>valeur;
-                fichier>>posex;
-                fichier>>posey;
-                fichier>>image;
-                add_interfaced_vertex(indice, valeur, posex, posey, image);
-                m_vertices[indice].m_image=image;
-
-            }
-            fichier.close();
-            }
-        else
-                cout << "Impossible d'ouvrir le fichier !" << endl;
+            fichier>>indice;
+            fichier>>valeur;
+            fichier>>posex;
+            fichier>>posey;
+            fichier>>image;
+            add_interfaced_vertex(indice, valeur, posex, posey, image);
+            m_vertices[indice].m_image=image;
+        }
+        fichier.close();
+    }
+    else
+        cout << "Impossible d'ouvrir le fichier !" << endl;
 
 
-            ifstream fichier2(fic2, ios::in);
-        if(fichier2)
+    ifstream fichier2(fic2, ios::in);
+    if(fichier2)
+    {
+        double poids;
+        int indice_arc=0;
+        for(int j(0); j<m_ordre ; ++j)
         {
-            double poids;
-            int indice_arc=0;
-            for(int j(0); j<m_ordre ; ++j)
+            for(int k(0); k<m_ordre; k++)
             {
-                for(int k(0); k<m_ordre;k++)
+                fichier2>>poids;
+                if(poids!=0)
                 {
-                    fichier2>>poids;
-                    if(poids!=0)
-                    {
-                        add_interfaced_edge(indice_arc, j, k, poids);
+                    add_interfaced_edge(indice_arc, j, k, poids);
 
 
-                        indice_arc++;
+                    indice_arc++;
 
 
-                    }
                 }
             }
         }
-            fichier2.close();
+        fichier2.close();
+    }
+    else
+        cout << "Impossible d'ouvrir le fichier !" << endl;
+
 }
 
 void Graph::SAUVEGARDER_GRAPH (string fic1, string fic2)
 {
-   ofstream fichier1(fic1, ios::trunc);
+    ofstream fichier1(fic1, ios::trunc);
     if(fichier1)
     {
         fichier1 << m_ordre << endl;
@@ -429,7 +433,7 @@ void Graph::Marche_ecosysteme()
         if(k==0 && pred==false)
         {
             k=100;
-             ///predation=predation*(7/8);
+
         }
 
         if(k==0 && pred==true)
@@ -443,7 +447,6 @@ void Graph::Marche_ecosysteme()
         valeur = vert.second.m_value+0.05*(vert.second.m_value*(1-vert.second.m_value/k)-predation);
         //cout<<predation<<endl;
         valeurs.insert(std::make_pair(vert.first,valeur));
-        cout<<valeur<<" "<<predation<<" "<<k<<endl;
     }
     for( auto &valor: valeurs)
     {
@@ -461,179 +464,142 @@ void Graph::Marche_ecosysteme()
 rest(25);
 
 }
-/*
-void Graph::Marche_ecosysteme()
+
+vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> tab_adjacence)
 {
-    std::map<int,double> valeurs;
-    double valeur;
-    for(auto &vert : m_vertices)
-    {
-        double k=0;
-        double predation=0;
-         if(vert.second.m_in.size()==0)
-        {
-            for(int j=0; j< vert.second.m_out.size();++j)
-            {
-                for(auto &edges : m_edges)
-                {
-                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
-                    {
-                      predation+=edges.second.m_weight*m_vertices[vert.second.m_out[j]].m_value;
+    vector<bool> c1(m_ordre,0); //composantes connexes directes partant de s
+    vector<bool> c2(m_ordre,0); //et indirectes arrivant vers s
+    vector<bool> c(m_ordre,0); //composante fortement connexe = c1 & c2 à retourner
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqués ou non
+    int x,y; //numéros de sommets intermédiaires des composantes connexes
+    bool ajoute = 1 ; // booléen indiquant si une nouvelle composante connexe est ajoutée
 
+    //Le sommet s est rendu connexe
+    c1[s] = 1;
+    c2[s]=1;
+
+    //Recherche des composantes connexes partant de s à ajouter dans c1 :
+    while(ajoute)
+    {
+        ajoute = 0;
+
+        //Pour tous les sommets x non marqués et connectés en partant de s
+        // Marquer chaque sommet x et connecter les sommets non marqués y adjacents à x
+        for(x=0; x<m_ordre; x++)
+        {
+            if(!marques[x] && c1[x])
+            {
+                marques[x]=1;
+                for(y=0; y<m_ordre; y++)
+                {
+                    if(tab_adjacence[x][y] && !marques[y])
+                    {
+                        c1[y]=1;
+                        ajoute = 1;
                     }
                 }
-                 ///valeurs[i]=(vert.second.m_value + (0.0005*(vert.second.m_value*(1-(vert.second.m_value/100))))-(0.0005*predation));
-                 ///i++;
-                 vert.second.m_value=(vert.second.m_value + (0.0005*vert.second.m_value)*(1-(vert.second.m_value/100)))-(0.0005*predation);
-
             }
         }
-        else
-        {
-            /*for(int j=0; j< vert.second.m_out.size();++j)
-            {
-                for(auto &edges : m_edges)
-                {
-                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
-                    {
-                      predation+=edges.second.m_weight*m_vertices[vert.second.m_out[j]].m_value;
+    }
 
+    //Recherche des composantes connexes arrivant à s à ajouter dans c2 :
+    for(int i = 0; i<marques.size(); i++)
+    {
+        marques[i]=0;
+    }
+    ajoute = 1;
+    while(ajoute)
+    {
+        ajoute = 0;
+
+        //Pour tous les sommets x non marqués et connectés arrivant à s
+        // Marquer chaque sommet x et connecter les sommets non marqués y adjacents à x
+        for(x=0; x<m_ordre; x++)
+        {
+            if(!marques[x] && c2[x])
+            {
+                marques[x]=1;
+                for(y=0; y<m_ordre; y++)
+                {
+                    if(tab_adjacence[y][x] && !marques[y])
+                    {
+                        c2[y]=1;
+                        ajoute = 1;
                     }
                 }
-            }*//*
-        for(int i = 0; i < vert.second.m_in.size(); i++)
-        {
-
-            for(auto &ed : m_edges)
-            {
-
-                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
-                {
-                    k=k+(ed.second.m_weight*m_vertices[vert.second.m_in[i]].m_value);
-                }
             }
-
-        ///valeurs[i]=((vert.second.m_value+(0.0005*(vert.second.m_value*(1-(vert.second.m_value/k)))))-(0.0005*predation));
-        ///i++;
-       /// cout<<vert.first<<" "<<vert.second.m_value+(0.0005*(vert.second.m_value*(1-(vert.second.m_value/k))))<<" "<<0.0005*predation<<" "<<vert.second.m_value/k<<endl;
-        vert.second.m_value=((vert.second.m_value+(0.0005*vert.second.m_value)*(1-(vert.second.m_value/k))))/*-(0.0005*predation)*/;/*
-
         }
-        }
-    }*/
-    /*
-    for(int j=0;j<m_vertices.size();j++)
-    {
-        cout<<m_vertices[j].m_value<<endl;
-    }
-    cout<<"ok"<<endl;
-    for(int j=0;j<valeurs.size();j++)
-    {
-        cout<<valeurs[j]<<endl;
-    }
-    cout<<"fin"<<endl;
-    int z=0;
-    for(auto &vertex: m_vertices)
-    {
-        vertex.second.m_value=valeurs[z];
-        z++;
     }
 
+    // Composante fortement connexe c = intersection de c1 et c2
+    for (x=0 ; x<m_ordre ; x++)
+    {
+        c[x] = c1[x] & c2[x] ;
+    }
+
+    // Retourner la composante fortement connexe c
+    return c ;
 }
 
-void Graph::simulation()
+void Graph::toutesLesComposantesFortementConnexes()
 {
-    for(auto &vert : m_vertices)
+    ComposantesFortementConnexes.clear();
+    /// ////////Création d'une matrice d'adjacence /////////////
+    vector<vector<bool>> tab_adjacence;
+    for(int i=0; i<m_ordre; i++)
     {
-        double k=0;
-        for(int i = 0; i < vert.second.m_in.size(); i++)
-        {
-            for(auto &ed : m_edges)
-            {
-
-                if(ed.first==vert.second.m_in[i])
-                {
-                    k += ed.second.m_weight*(m_vertices[i].m_value/10);
-                }
-                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
-                {
-
-                   k += ed.second.m_weight*(m_vertices[i].m_value/10);
-                }
-            }
-            if(k==0)
-            {
-                vert.second.m_value += 0.5*vert.second.m_value;
-            }
-            vert.second.m_value += 0.0005*(vert.second.m_value*(1-(vert.second.m_value/k)));
-        }
-
+        vector<bool> temp(m_ordre,0);
+        tab_adjacence.push_back(temp);
     }
-}
-*/
-
-/*
-void Graph::simulation()
-{
-    for(auto &vert : m_vertices)
+    for(auto &arc: m_edges)
     {
-        double k=0;
-        double N=0;
-        if(vert.second.m_in.size()==0)
-        {
-            for(int j=0; j< vert.second.m_out.size();++j)
-            {
-                for(auto &edges : m_edges)
-                {
-                    if(edges.second.m_to==vert.second.m_out[j] && edges.second.m_from==vert.first)
-                    {
-                      N+=m_vertices[vert.second.m_out[j]].m_value;
-                      N/(vert.second.m_out.size()+1);
-                    }
-                }
-                vert.second.m_value+=(0.0005*(vert.second.m_value*(1-(N/vert.second.m_value))));
-            }
-        }
-        for(int i = 0; i < vert.second.m_in.size(); i++)
-        {
-
-            for(auto &ed : m_edges)
-            {
-
-                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
-                {
-                    k+=ed.second.m_weight;
-                    N+=m_vertices[vert.second.m_in[i]].m_value;
-
-
-                }
-            }
-            vert.second.m_value += 0.0005*(vert.second.m_value*(1-(k/N)));
-        }
-
-
+        int x = arc.second.m_from;
+        int y = arc.second.m_to;
+        tab_adjacence[x][y]=1;
     }
-}
-*/
-/*
-for(unsigned int i (0); i<vert.second.m_in.size();++i)
+    /// ///////////////////////////////////////////////////////
+
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqués ou non
+    int x, y ; //numéros de sommets intermédiaires comme indices des tableaux
+    int nb_composantes=0;
+
+    // Pour tous les sommets x non marqués
+    // Rechercher la composante fortement connexe de x
+    // Marquer chaque sommet x et marquer les sommets y connectés à x et non marqués
+    for (x=0 ; x<m_ordre ; x++)
+    {
+        if (!marques[x])
         {
-            for(auto &edges : m_edges)
-                {
-                    if(edges.second.m_from == vert.second.m_in[i] && edges.second.m_to == vert.first)
-                    {
-                        k+=edges.second.m_weight*0.01*m_vertices[edges.second.m_from].m_value;
-                    }
-                }
-        }
-        for(unsigned j(0); j<vert.second.m_out.size();++j)
-        {
-            for(auto &edges : m_edges)
+            /*vector<bool> composante = uneComposanteFortementConnexe(x, tab_adjacence);
+            for(int k =0; k < composante.size(); k++)
+                cout << composante[k] << " ";
+            cout << endl;*/
+            ComposantesFortementConnexes.push_back(uneComposanteFortementConnexe(x, tab_adjacence)) ;
+
+            marques[x] = 1 ;
+
+            //On marque tous les sommets connexes à x
+            for(y = 0; y<ComposantesFortementConnexes[nb_composantes].size(); y++)
             {
-                if(edges.second.m_to ==  vert.second.m_out[j] && edges.second.m_from == vert.first)
+                if(ComposantesFortementConnexes[nb_composantes][y] && !marques[y])
                 {
-                    predation+=edges.second.m_weight*0.01*m_vertices[edges.second.m_to].m_value;
+                    marques[y] = 1;
                 }
             }
-        }*/
+
+            nb_composantes++;
+            cout << "Composante " << nb_composantes << ": (" ;
+            for(int i=0; i<ComposantesFortementConnexes[nb_composantes-1].size(); i++)
+            {
+                if(ComposantesFortementConnexes[nb_composantes-1][i])
+                {
+                    cout << i << " ";
+                }
+            }
+            cout << " )" << endl;
+        }
+    }
+    cout << "Il y a " << ComposantesFortementConnexes.size() << " fortement connexes." << endl;
+
+}
 

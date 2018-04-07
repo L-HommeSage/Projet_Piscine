@@ -313,6 +313,8 @@ class Graph
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<GraphInterface> m_interface = nullptr;
 
+        std::vector<std::vector<bool>> ComposantesFortementConnexes;
+
         /// Ordre
         int m_ordre;
 
@@ -343,7 +345,9 @@ class Graph
 
         void Marche_ecosysteme();
 
+        std::vector<bool> uneComposanteFortementConnexe(int s, std::vector<std::vector<bool>> tab_adjacence);
 
+        void toutesLesComposantesFortementConnexes();
 
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
