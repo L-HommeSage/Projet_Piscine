@@ -205,6 +205,22 @@ void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::stri
     m_vertices[idx] = Vertex(value, vi);
 }
 
+/// Aide à l'ajout de sommets interfacés
+void Graph::add_interfaced_vertex_reduit(int idx, double value, int x, int y, std::string pic_name, int pic_idx )
+{
+    if ( m_vertices_reduit.find(idx)!=m_vertices_reduit.end() )
+    {
+        std::cerr << "Error adding vertex at idx=" << idx << " already used..." << std::endl;
+        throw "Error adding vertex";
+    }
+    // Création d'une interface de sommet
+    VertexInterface *vi = new VertexInterface(idx, x, y, pic_name, pic_idx);
+    // Ajout de la top box de l'interface de sommet
+    m_interface->m_main_box.add_child(vi->m_top_box);
+    // On peut ajouter directement des vertices dans la map avec la notation crochet :
+    m_vertices_reduit[idx] = Vertex(value, vi);
+}
+
 /// Aide à l'ajout d'arcs interfacés
 void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weight)
 {
@@ -227,6 +243,29 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
     m_edges[idx].m_to = id_vert2;
     m_vertices[id_vert1].m_out.push_back(id_vert2);
     m_vertices[id_vert2].m_in.push_back(id_vert1);
+}
+
+void Graph::add_interfaced_edge_reduit(int idx, int id_vert1, int id_vert2, double weight)
+{
+    if ( m_edges_reduit.find(idx)!=m_edges_reduit.end() )
+    {
+        std::cerr << "Error adding edge at idx=" << idx << " already used..." << std::endl;
+        throw "Error adding edge";
+    }
+
+    if ( m_vertices_reduit.find(id_vert1)==m_vertices_reduit.end() || m_vertices_reduit.find(id_vert2)==m_vertices_reduit.end() )
+    {
+        std::cerr << "Error adding edge idx=" << idx << " between vertices " << id_vert1 << " and " << id_vert2 << " not in m_vertices" << std::endl;
+        throw "Error adding edge";
+    }
+
+    EdgeInterface *ei = new EdgeInterface(m_vertices_reduit[id_vert1], m_vertices_reduit[id_vert2]);
+    m_interface->m_main_box.add_child(ei->m_top_edge);
+    m_edges_reduit[idx] = Edge(weight, ei);
+    m_edges_reduit[idx].m_from = id_vert1;
+    m_edges_reduit[idx].m_to = id_vert2;
+    m_vertices_reduit[id_vert1].m_out.push_back(id_vert2);
+    m_vertices_reduit[id_vert2].m_in.push_back(id_vert1);
 }
 
 void Graph::marquerSommets()
@@ -583,6 +622,96 @@ void Graph::toutesLesComposantesFortementConnexes()
         }
     }
     cout << "Il y a " << ComposantesFortementConnexes.size() << " composante fortement connexes." << endl;
-
 }
+
+void Graph::cacher_graph()
+{
+    for(auto &elem : m_vertices)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
+void Graph::afficher_graph()
+{
+    for(auto &elem : m_vertices)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.add_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.add_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
+void Graph::creer_graph_reduit()
+{
+    for(int i = 0; i<ComposantesFortementConnexes.size(); i++)
+    {
+        int j=0;
+        while(!ComposantesFortementConnexes[i][j]) {j++;}
+        add_interfaced_vertex_reduit(i, 50, m_vertices[j].pose_X, m_vertices[j].pose_Y, m_vertices[j].m_image);
+    }
+
+    for(auto &elem : m_edges)
+    {
+        int x=-1;
+        int y=-1;
+        int from = elem.second.m_from;
+        int to = elem.second.m_to;
+        for(int i = 0; i<ComposantesFortementConnexes.size(); i++)
+        {
+            if(ComposantesFortementConnexes[i][from])
+            {
+                x=i;
+            }
+            if(ComposantesFortementConnexes[i][to])
+            {
+                y=i;
+            }
+        }
+        if(x!=-1 && y!=-1 && x!=y)
+        {
+            add_interfaced_edge_reduit(m_edges_reduit.size()+1,x,y,elem.second.m_weight);
+        }
+    }
+}
+
+void Graph::cacher_graph_reduit()
+{
+    for(auto &elem : m_vertices_reduit)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges_reduit)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
 
