@@ -64,6 +64,8 @@ void Vertex::post_update()
 
     /// Reprendre la valeur du slider dans la donnée m_value locale
     m_value = m_interface->m_slider_value.get_value();
+    pose_X = m_interface->m_top_box.get_posx();
+    pose_Y = m_interface->m_top_box.get_posy();
 }
 
 
@@ -124,6 +126,7 @@ void Edge::post_update()
 
     /// Reprendre la valeur du slider dans la donnée m_weight locale
     m_weight = m_interface->m_slider_weight.get_value();
+    if(m_weight==0) m_weight=0.01;
 }
 
 
@@ -148,70 +151,19 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_main_box.set_dim(908,720);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
     m_main_box.set_bg_color(BLANCROSE);
-}
 
 
-/// Méthode spéciale qui construit un graphe arbitraire (démo)
-/// Cette méthode est à enlever et remplacer par un système
-/// de chargement de fichiers par exemple.
-/// Bien sûr on ne veut pas que vos graphes soient construits
-/// "à la main" dans le code comme ça.
-void Graph::make_example()
-{
-    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
-    // La ligne précédente est en gros équivalente à :
-    // m_interface = new GraphInterface(50, 0, 750, 600);
-    ifstream fichier("graph_1.txt", ios::in);
-    if(fichier)
-    {
-        int indice;
-        double valeur;
-        int posex,posey;
-        string image;
-        int ordre;
-        fichier>>ordre;
-        m_ordre=ordre;
-        for(int i(0); i<ordre; ++i)
-        {
-            fichier>>indice;
-            fichier>>valeur;
-            fichier>>posex;
-            fichier>>posey;
-            fichier>>image;
-            add_interfaced_vertex(indice, valeur, posex, posey, image);
-            m_vertices[indice].pose_X=posex;
-            m_vertices[indice].pose_Y=posey;
-            m_vertices[indice].m_image=image;
-        }
-        fichier.close();
-    }
-    else
-        cout << "Impossible d'ouvrir le fichier !" << endl;
+    /*m_top_box.add_child(m_sauvegard);
+    m_sauvegard.set_dim(20,20);
+    m_sauvegard.set_pos(200,572);
+    m_sauvegard.set_bg_color(ROUGE);
+
+    m_top_box.add_child(m_legendesauvegarde);
+    m_legendesauvegarde.set_message("<- Sauvegarde");
+    m_legendesauvegarde.set_pos(225, 580);
+    m_sauvegard.set_bg_color(ROUGE);*/
 
 
-    ifstream fichier2("matrice_adj_graph_1.txt", ios::in);
-    if(fichier2)
-    {
-        double poids;
-        int indice_arc=0;
-        for(int j(0); j<m_ordre ; ++j)
-        {
-            for(int k(0); k<m_ordre; k++)
-            {
-                fichier2>>poids;
-                if(poids!=0)
-                {
-                    add_interfaced_edge(indice_arc, j, k, poids);
-                    indice_arc++;
-
-                }
-            }
-        }
-    }
-    fichier2.close();
-    cout<<m_edges[0].m_from<<endl;
-    cout<<m_edges[0].m_to<<endl;
-    cout<<m_vertices[0].m_out[0];
 }
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
@@ -234,6 +186,7 @@ void Graph::update()
     for (auto &elt : m_edges)
         elt.second.post_update();
 
+    m_ordre=m_vertices.size();
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -272,24 +225,150 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
     m_edges[idx] = Edge(weight, ei);
     m_edges[idx].m_from = id_vert1;
     m_edges[idx].m_to = id_vert2;
-
-    m_vertices[id_vert1].m_out.push_back(idx);
-    m_vertices[id_vert2].m_in.push_back(idx);
+    m_vertices[id_vert1].m_out.push_back(id_vert2);
+    m_vertices[id_vert2].m_in.push_back(id_vert1);
 }
 
-///SAUVEGARDE
-
-void sauvegarder_graphe()
+void Graph::effacer_sommet(int eidx)
 {
-    ///Sauvegarde des sommets
+    copievertex_graph.push_back(m_vertices[eidx]);
 
-    ofstream fichier1("graphe_1_nouv.txt", ios::trunc);
+
+    for(auto &e: m_edges)
+    {
+        if(e.second.m_from==eidx || e.second.m_to==eidx)
+        {
+            copieedge_graph.push_back(e.second);
+            effacer_arete(e.first);
+        }
+    }
+    Vertex &remver=m_vertices.at(eidx);
+    if(m_interface && remver.m_interface)
+    {
+        m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
+    }
+
+    m_vertices.erase( eidx );
+}
+
+void Graph::effacer_arete(int eidx)
+{
+
+
+    Edge &remed=m_edges.at(eidx);
+    if (m_interface && remed.m_interface)
+    {
+        m_interface->m_main_box.remove_child( remed.m_interface->m_top_edge );
+    }
+    std::vector<int> &vefrom = m_vertices[remed.m_from].m_out;
+    std::vector<int> &veto = m_vertices[remed.m_to].m_in;
+    vefrom.erase( std::remove( vefrom.begin(), vefrom.end(), eidx ), vefrom.end() );
+    veto.erase( std::remove( veto.begin(), veto.end(), eidx ), veto.end() );
+    m_edges.erase( eidx );
+}
+
+void Graph::ajouter_sommet()
+{
+    int indice;
+    double valeur;
+    string image;
+    std::cout<<"saisir Indice: ";
+    std::cin>>indice;
+    std::cout<<endl;
+    cout<<"saisir valeur: ";
+    cin>>valeur;
+    std::cout<<endl;
+    std::cout<<"saisir image: ";
+    cin>>image;
+    std::cout<<endl;
+    image=image+".jpg";
+
+    add_interfaced_vertex(indice, valeur, 250, 250,image);
+
+}
+
+void Graph::ajouter_arete()
+{
+    int from,to;
+    double poids;
+    std::cout<<"saisir sommet de depart: ";
+    std::cin>>from;
+    std::cout<<endl;
+    cout<<"saisir sommet d arrive: ";
+    cin>>to;
+    std::cout<<endl;
+    cout<<"saisir poids de l arete: ";
+    cin>>poids;
+    std::cout<<endl;
+
+    add_interfaced_edge(m_edges.size()+1,from,to,poids);
+}
+void Graph::CHARGER_Graph_1(string fic1, string fic2)
+{
+    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
+    ifstream fichier(fic1, ios::in);
+    if(fichier)
+    {
+        int indice;
+        double valeur;
+        int posex,posey;
+        string image;
+        int ordre;
+        fichier>>ordre;
+        m_ordre=ordre;
+
+        for(int i(0); i<ordre; ++i)
+        {
+            fichier>>indice;
+            fichier>>valeur;
+            fichier>>posex;
+            fichier>>posey;
+            fichier>>image;
+            add_interfaced_vertex(indice, valeur, posex, posey, image);
+            m_vertices[indice].m_image=image;
+        }
+        fichier.close();
+    }
+    else
+        cout << "Impossible d'ouvrir le fichier !" << endl;
+
+
+    ifstream fichier2(fic2, ios::in);
+    if(fichier2)
+    {
+        double poids;
+        int indice_arc=0;
+        for(int j(0); j<m_ordre ; ++j)
+        {
+            for(int k(0); k<m_ordre; k++)
+            {
+                fichier2>>poids;
+                if(poids!=0)
+                {
+                    add_interfaced_edge(indice_arc, j, k, poids);
+
+
+                    indice_arc++;
+
+
+                }
+            }
+        }
+        fichier2.close();
+    }
+    else
+        cout << "Impossible d'ouvrir le fichier !" << endl;
+
+}
+
+void Graph::SAUVEGARDER_GRAPH (string fic1, string fic2)
+{
+    ofstream fichier1(fic1, ios::trunc);
     if(fichier1)
     {
-
         fichier1 << m_ordre << endl;
 
-        for (auto &e : m_edges)
+        for (auto &e : m_vertices)
         {
             fichier1 << e.first << ' ' << e.second.m_value << ' ' << e.second.pose_X << ' ' ;
             fichier1 << e.second.pose_Y << ' ' << e.second.m_image << endl;
@@ -301,28 +380,192 @@ void sauvegarder_graphe()
 
     ///Sauvegarde des arêtes
 
-    ofstream fichier2("matrice_adj_graphe_1_nouv.txt", ios::trunc);
+    ofstream fichier2(fic2, ios::trunc);
+
     if(fichier2)
     {
         for(int i = 0; i < m_ordre; i++)
         {
             for(int j = 0; j < m_ordre; j++)
             {
+                int trouve = 0;
                 for (auto &e : m_edges)
                 {
                     if (e.second.m_from==i && e.second.m_to==j )
                     {
-                        fichier2 << e.second.m_weight << ' ' ;
+                        trouve= e.second.m_weight;
                     }
-                    else fichier2 << 0 << ' ';
+
                 }
+                fichier2 << trouve << ' ';
             }
-            fichier2 << endl;
+            fichier2<<endl;
         }
 
         fichier2.close();
     }
     else
         cout << "Impossible d'ouvrir le fichier !" << endl;
+}
+
+void Graph::simulation()
+{
+    for(auto &vert : m_vertices)
+    {
+        double k=0;
+        for(int i = 0; i < vert.second.m_in.size(); i++)
+        {
+            for(auto &ed : m_edges)
+            {
+                if(ed.second.m_from==vert.second.m_in[i] && ed.second.m_to==vert.first)
+                {
+
+                    k += ed.second.m_weight*(m_vertices[i].m_value/10);
+                }
+            }
+            if(k==0)
+                k=100;
+            vert.second.m_value += 0.0005*(vert.second.m_value*(1-(vert.second.m_value/k)));
+        }
+
+    }
+}
+
+vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> tab_adjacence)
+{
+    vector<bool> c1(m_ordre,0); //composantes connexes directes partant de s
+    vector<bool> c2(m_ordre,0); //et indirectes arrivant vers s
+    vector<bool> c(m_ordre,0); //composante fortement connexe = c1 & c2 à retourner
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqués ou non
+    int x,y; //numéros de sommets intermédiaires des composantes connexes
+    bool ajoute = 1 ; // booléen indiquant si une nouvelle composante connexe est ajoutée
+
+    //Le sommet s est rendu connexe
+    c1[s] = 1;
+    c2[s]=1;
+
+    //Recherche des composantes connexes partant de s à ajouter dans c1 :
+    while(ajoute)
+    {
+        ajoute = 0;
+
+        //Pour tous les sommets x non marqués et connectés en partant de s
+        // Marquer chaque sommet x et connecter les sommets non marqués y adjacents à x
+        for(x=0; x<m_ordre; x++)
+        {
+            if(!marques[x] && c1[x])
+            {
+                marques[x]=1;
+                for(y=0; y<m_ordre; y++)
+                {
+                    if(tab_adjacence[x][y] && !marques[y])
+                    {
+                        c1[y]=1;
+                        ajoute = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    //Recherche des composantes connexes arrivant à s à ajouter dans c2 :
+    for(int i = 0; i<marques.size(); i++)
+    {
+        marques[i]=0;
+    }
+    ajoute = 1;
+    while(ajoute)
+    {
+        ajoute = 0;
+
+        //Pour tous les sommets x non marqués et connectés arrivant à s
+        // Marquer chaque sommet x et connecter les sommets non marqués y adjacents à x
+        for(x=0; x<m_ordre; x++)
+        {
+            if(!marques[x] && c2[x])
+            {
+                marques[x]=1;
+                for(y=0; y<m_ordre; y++)
+                {
+                    if(tab_adjacence[y][x] && !marques[y])
+                    {
+                        c2[y]=1;
+                        ajoute = 1;
+                    }
+                }
+            }
+        }
+    }
+
+    // Composante fortement connexe c = intersection de c1 et c2
+    for (x=0 ; x<m_ordre ; x++)
+    {
+        c[x] = c1[x] & c2[x] ;
+    }
+
+    // Retourner la composante fortement connexe c
+    return c ;
+}
+
+void Graph::toutesLesComposantesFortementConnexes()
+{
+    ComposantesFortementConnexes.clear();
+    /// ////////Création d'une matrice d'adjacence /////////////
+    vector<vector<bool>> tab_adjacence;
+    for(int i=0; i<m_ordre; i++)
+    {
+        vector<bool> temp(m_ordre,0);
+        tab_adjacence.push_back(temp);
+    }
+    for(auto &arc: m_edges)
+    {
+        int x = arc.second.m_from;
+        int y = arc.second.m_to;
+        tab_adjacence[x][y]=1;
+    }
+    /// ///////////////////////////////////////////////////////
+
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqués ou non
+    int x, y ; //numéros de sommets intermédiaires comme indices des tableaux
+    int nb_composantes=0;
+
+    // Pour tous les sommets x non marqués
+    // Rechercher la composante fortement connexe de x
+    // Marquer chaque sommet x et marquer les sommets y connectés à x et non marqués
+    for (x=0 ; x<m_ordre ; x++)
+    {
+        if (!marques[x])
+        {
+            /*vector<bool> composante = uneComposanteFortementConnexe(x, tab_adjacence);
+            for(int k =0; k < composante.size(); k++)
+                cout << composante[k] << " ";
+            cout << endl;*/
+            ComposantesFortementConnexes.push_back(uneComposanteFortementConnexe(x, tab_adjacence)) ;
+
+            marques[x] = 1 ;
+
+            //On marque tous les sommets connexes à x
+            for(y = 0; y<ComposantesFortementConnexes[nb_composantes].size(); y++)
+            {
+                if(ComposantesFortementConnexes[nb_composantes][y] && !marques[y])
+                {
+                    marques[y] = 1;
+                }
+            }
+
+            nb_composantes++;
+            cout << "Composante " << nb_composantes << ": (" ;
+            for(int i=0; i<ComposantesFortementConnexes[nb_composantes-1].size(); i++)
+            {
+                if(ComposantesFortementConnexes[nb_composantes-1][i])
+                {
+                    cout << i << " ";
+                }
+            }
+            cout << " )" << endl;
+        }
+    }
+    cout << "Il y a " << ComposantesFortementConnexes.size() << " fortement connexes." << endl;
 
 }
+
