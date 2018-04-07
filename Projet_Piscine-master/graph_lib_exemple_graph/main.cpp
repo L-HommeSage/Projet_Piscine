@@ -176,6 +176,16 @@ int main()
             {
                 g->toutesLesComposantesFortementConnexes();
                 g->marquerSommets();
+                g->update();
+                grman::mettre_a_jour();
+                readkey();
+                g->cacher_graph();
+                g->creer_graph_reduit();
+                g->update();
+                grman::mettre_a_jour();
+                readkey();
+                g->cacher_graph_reduit();
+                g->afficher_graph();
             }
 
         grman::mettre_a_jour();
