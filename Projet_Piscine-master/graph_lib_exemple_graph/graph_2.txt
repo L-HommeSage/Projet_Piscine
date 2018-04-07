@@ -1,0 +1,9 @@
+8
+0 20 612 478 herbe.jpg
+1 30 283 476 foret.jpg
+2 40 742 349 insecte.jpg
+3 10 531 4 aigle.jpg
+4 12 738 183 ecureil.jpg
+5 30 442 471 lapin.jpg
+6 50 153 56 renard.jpg
+7 40 167 280 rouge-gorge.jpg

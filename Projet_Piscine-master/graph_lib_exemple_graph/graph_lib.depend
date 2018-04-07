@@ -1,9 +1,9 @@
 # depslib dependency file v1.0
-1522839275 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\graph.cpp
+1522944597 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\graph.cpp
 	"graph.h"
 	<fstream>
 
-1522833390 c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\graph.h
+1522941997 c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\graph.h
 	<vector>
 	<map>
 	<string>
@@ -33,7 +33,7 @@
 1522575069 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\grman\coords.cpp
 	"coords.h"
 
-1522515823 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\grman\grman.cpp
+1522887723 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\grman\grman.cpp
 	<cmath>
 	<unordered_map>
 	<unordered_set>
@@ -50,7 +50,119 @@
 1522636919 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\grman\widget.cpp
 	"widget.h"
 
-1522841748 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\main.cpp
+1522943107 source:c:\users\anton\desktop\graph_lib_v1\graph_lib_exemple_graph\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+
+1523022372 source:c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\graph.cpp
+	"graph.h"
+	<fstream>
+
+1523013134 c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	"grman/grman.h"
+
+1522912556 c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1522912556 c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\grman_couleurs.h
+
+1522912556 c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\coords.h
+	<cmath>
+
+1522912556 c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1522912556 source:c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\coords.cpp
+	"coords.h"
+
+1522949837 source:c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1522912556 source:c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\grman\widget.cpp
+	"widget.h"
+
+1523013270 source:c:\users\anton\desktop\projet_piscine-master\projet_piscine-master\graph_lib_exemple_graph\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+
+1523123823 source:c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\graph.cpp
+	"graph.h"
+	<fstream>
+
+1523113366 c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	"grman/grman.h"
+
+1523025037 c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1523025037 c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\grman_couleurs.h
+
+1523025037 c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\coords.h
+	<cmath>
+
+1523025037 c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1523025037 source:c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\coords.cpp
+	"coords.h"
+
+1523025037 source:c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1523025037 source:c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\grman\widget.cpp
+	"widget.h"
+
+1523124168 source:c:\users\henintsoa\desktop\projet_piscine-master\graph_lib_exemple_graph\main.cpp
 	"grman/grman.h"
 	<iostream>
 	"graph.h"

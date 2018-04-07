@@ -1,0 +1,14 @@
+13
+0 50 234 30 peche.jpg
+1 50 379 26 cargo.jpg
+2 50 532 20 oiseaux.jpg
+3 50 612 138 soleil.jpg
+4 50 174 170 saumon.jpg
+5 50 313 166 thon.jpg
+6 50 613 300 algue.jpg
+7 50 256 285 morue.jpg
+8 50 399 279 sprat.jpg
+9 50 507 172 calanus_finmarchicus.jpg
+10 62.8571 571 424 dinoflagellates.jpg
+11 50 414 415 diatoms.jpg
+12 50 243 410 small_copepods.jpg

@@ -1,0 +1,6 @@
+5
+0 30 115 -1 pollution.jpg
+2 50 278 233 precipitation.jpg
+3 0 588 278 evaporation.jpg
+4 100 771 480 vent.jpg
+5 35 164 451 condensation.jpg
