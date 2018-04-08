@@ -4,7 +4,7 @@
                     VERTEX
 ****************************************************/
 using namespace std;
-/// Le constructeur met en place les ÈlÈments de l'interface
+/// Le constructeur met en place les √©l√©ments de l'interface
 VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, int pic_idx)
 {
     // La boite englobante
@@ -12,9 +12,9 @@ VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, in
     m_top_box.set_dim(130, 100);
     m_top_box.set_moveable();
 
-    // Le slider de rÈglage de valeur
+    // Le slider de r√©glage de valeur
     m_top_box.add_child( m_slider_value );
-    m_slider_value.set_range(0.0, 100.0);  // Valeurs arbitraires, ‡ adapter...
+    m_slider_value.set_range(0.0, 100.0);  // Valeurs arbitraires, √† adapter...
     m_slider_value.set_dim(20,80);
     m_slider_value.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
 
@@ -42,27 +42,27 @@ VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, in
 }
 
 
-/// Gestion du Vertex avant l'appel ‡ l'interface
+/// Gestion du Vertex avant l'appel √† l'interface
 void Vertex::pre_update()
 {
     if (!m_interface)
         return;
 
-    /// Copier la valeur locale de la donnÈe m_value vers le slider associÈ
+    /// Copier la valeur locale de la donn√©e m_value vers le slider associ√©
     m_interface->m_slider_value.set_value(m_value);
 
-    /// Copier la valeur locale de la donnÈe m_value vers le label sous le slider
+    /// Copier la valeur locale de la donn√©e m_value vers le label sous le slider
     m_interface->m_label_value.set_message( std::to_string( (int)m_value) );
 }
 
 
-/// Gestion du Vertex aprËs l'appel ‡ l'interface
+/// Gestion du Vertex apr√®s l'appel √† l'interface
 void Vertex::post_update()
 {
     if (!m_interface)
         return;
 
-    /// Reprendre la valeur du slider dans la donnÈe m_value locale
+    /// Reprendre la valeur du slider dans la donn√©e m_value locale
     m_value = m_interface->m_slider_value.get_value();
     pose_X = m_interface->m_top_box.get_posx();
     pose_Y = m_interface->m_top_box.get_posy();
@@ -74,7 +74,7 @@ void Vertex::post_update()
                     EDGE
 ****************************************************/
 
-/// Le constructeur met en place les ÈlÈments de l'interface
+/// Le constructeur met en place les √©l√©ments de l'interface
 EdgeInterface::EdgeInterface(Vertex& from, Vertex& to)
 {
     // Le WidgetEdge de l'interface de l'arc
@@ -87,14 +87,14 @@ EdgeInterface::EdgeInterface(Vertex& from, Vertex& to)
     m_top_edge.attach_to(to.m_interface->m_top_box);
     m_top_edge.reset_arrow_with_bullet();
 
-    // Une boite pour englober les widgets de rÈglage associÈs
+    // Une boite pour englober les widgets de r√©glage associ√©s
     m_top_edge.add_child(m_box_edge);
     m_box_edge.set_dim(24,60);
     m_box_edge.set_bg_color(BLANCBLEU);
 
-    // Le slider de rÈglage de valeur
+    // Le slider de r√©glage de valeur
     m_box_edge.add_child( m_slider_weight );
-    m_slider_weight.set_range(0.0, 100.0);  // Valeurs arbitraires, ‡ adapter...
+    m_slider_weight.set_range(0.0, 100.0);  // Valeurs arbitraires, √† adapter...
     m_slider_weight.set_dim(16,40);
     m_slider_weight.set_gravity_y(grman::GravityY::Up);
 
@@ -105,28 +105,29 @@ EdgeInterface::EdgeInterface(Vertex& from, Vertex& to)
 }
 
 
-/// Gestion du Edge avant l'appel ‡ l'interface
+/// Gestion du Edge avant l'appel √† l'interface
 void Edge::pre_update()
 {
     if (!m_interface)
         return;
 
-    /// Copier la valeur locale de la donnÈe m_weight vers le slider associÈ
+    /// Copier la valeur locale de la donn√©e m_weight vers le slider associ√©
     m_interface->m_slider_weight.set_value(m_weight);
 
-    /// Copier la valeur locale de la donnÈe m_weight vers le label sous le slider
+    /// Copier la valeur locale de la donn√©e m_weight vers le label sous le slider
     m_interface->m_label_weight.set_message( std::to_string( (int)m_weight ) );
 }
 
-/// Gestion du Edge aprËs l'appel ‡ l'interface
+/// Gestion du Edge apr√®s l'appel √† l'interface
 void Edge::post_update()
 {
     if (!m_interface)
         return;
 
-    /// Reprendre la valeur du slider dans la donnÈe m_weight locale
+    /// Reprendre la valeur du slider dans la donn√©e m_weight locale
     m_weight = m_interface->m_slider_weight.get_value();
-    if(m_weight==0) m_weight=0.01;
+    if(m_weight==0)
+        m_weight=0.01;
 }
 
 
@@ -135,8 +136,8 @@ void Edge::post_update()
                     GRAPH
 ****************************************************/
 
-/// Ici le constructeur se contente de prÈparer un cadre d'accueil des
-/// ÈlÈments qui seront ensuite ajoutÈs lors de la mise ne place du Graphe
+/// Ici le constructeur se contente de pr√©parer un cadre d'accueil des
+/// √©l√©ments qui seront ensuite ajout√©s lors de la mise ne place du Graphe
 GraphInterface::GraphInterface(int x, int y, int w, int h)
 {
     m_top_box.set_dim(1000,740);
@@ -166,7 +167,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
 }
 
-/// La mÈthode update ‡ appeler dans la boucle de jeu pour les graphes avec interface
+/// La m√©thode update √† appeler dans la boucle de jeu pour les graphes avec interface
 void Graph::update()
 {
     if (!m_interface)
@@ -189,7 +190,7 @@ void Graph::update()
     m_ordre=m_vertices.size();
 }
 
-/// Aide ‡ l'ajout de sommets interfacÈs
+/// Aide √† l'ajout de sommets interfac√©s
 void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name, int pic_idx )
 {
     if ( m_vertices.find(idx)!=m_vertices.end() )
@@ -197,7 +198,7 @@ void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::stri
         std::cerr << "Error adding vertex at idx=" << idx << " already used..." << std::endl;
         throw "Error adding vertex";
     }
-    // CrÈation d'une interface de sommet
+    // Cr√©ation d'une interface de sommet
     VertexInterface *vi = new VertexInterface(idx, x, y, pic_name, pic_idx);
     // Ajout de la top box de l'interface de sommet
     m_interface->m_main_box.add_child(vi->m_top_box);
@@ -205,7 +206,23 @@ void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::stri
     m_vertices[idx] = Vertex(value, vi);
 }
 
-/// Aide ‡ l'ajout d'arcs interfacÈs
+/// Aide √† l'ajout de sommets interfac√©s
+void Graph::add_interfaced_vertex_reduit(int idx, double value, int x, int y, std::string pic_name, int pic_idx )
+{
+    if ( m_vertices_reduit.find(idx)!=m_vertices_reduit.end() )
+    {
+        std::cerr << "Error adding vertex at idx=" << idx << " already used..." << std::endl;
+        throw "Error adding vertex";
+    }
+    // Cr√©ation d'une interface de sommet
+    VertexInterface *vi = new VertexInterface(idx, x, y, pic_name, pic_idx);
+    // Ajout de la top box de l'interface de sommet
+    m_interface->m_main_box.add_child(vi->m_top_box);
+    // On peut ajouter directement des vertices dans la map avec la notation crochet :
+    m_vertices_reduit[idx] = Vertex(value, vi);
+}
+
+/// Aide √† l'ajout d'arcs interfac√©s
 void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weight)
 {
     if ( m_edges.find(idx)!=m_edges.end() )
@@ -229,6 +246,29 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
     m_vertices[id_vert2].m_in.push_back(id_vert1);
 }
 
+void Graph::add_interfaced_edge_reduit(int idx, int id_vert1, int id_vert2, double weight)
+{
+    if ( m_edges_reduit.find(idx)!=m_edges_reduit.end() )
+    {
+        std::cerr << "Error adding edge at idx=" << idx << " already used..." << std::endl;
+        throw "Error adding edge";
+    }
+
+    if ( m_vertices_reduit.find(id_vert1)==m_vertices_reduit.end() || m_vertices_reduit.find(id_vert2)==m_vertices_reduit.end() )
+    {
+        std::cerr << "Error adding edge idx=" << idx << " between vertices " << id_vert1 << " and " << id_vert2 << " not in m_vertices" << std::endl;
+        throw "Error adding edge";
+    }
+
+    EdgeInterface *ei = new EdgeInterface(m_vertices_reduit[id_vert1], m_vertices_reduit[id_vert2]);
+    m_interface->m_main_box.add_child(ei->m_top_edge);
+    m_edges_reduit[idx] = Edge(weight, ei);
+    m_edges_reduit[idx].m_from = id_vert1;
+    m_edges_reduit[idx].m_to = id_vert2;
+    m_vertices_reduit[id_vert1].m_out.push_back(id_vert2);
+    m_vertices_reduit[id_vert2].m_in.push_back(id_vert1);
+}
+
 void Graph::effacer_sommet(int eidx)
 {
     copievertex_graph.push_back(m_vertices[eidx]);
@@ -238,7 +278,7 @@ void Graph::effacer_sommet(int eidx)
     {
         if(e.second.m_from==eidx || e.second.m_to==eidx)
         {
-            copieedge_graph.push_back(e.second);
+            //copieedge_graph.push_back(e.second);
             effacer_arete(e.first);
         }
     }
@@ -248,12 +288,12 @@ void Graph::effacer_sommet(int eidx)
         m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
     }
 
+    m_ordre--;
     m_vertices.erase( eidx );
 }
 
 void Graph::effacer_arete(int eidx)
 {
-
 
     Edge &remed=m_edges.at(eidx);
     if (m_interface && remed.m_interface)
@@ -269,12 +309,26 @@ void Graph::effacer_arete(int eidx)
 
 void Graph::ajouter_sommet()
 {
-    int indice;
+    int indice=0;
+    bool indice_est_utilise;
     double valeur;
     string image;
-    std::cout<<"saisir Indice: ";
-    std::cin>>indice;
-    std::cout<<endl;
+    for(int i = 0; i <= m_vertices.size(); i++)
+    {
+        indice_est_utilise = false;
+        for(auto &e : m_vertices)
+        {
+            if(e.first == i)
+            {
+                indice_est_utilise=true;
+            }
+        }
+        if(indice_est_utilise==false)
+        {
+            indice=i;
+            break;
+        }
+    }
     cout<<"saisir valeur: ";
     cin>>valeur;
     std::cout<<endl;
@@ -283,6 +337,7 @@ void Graph::ajouter_sommet()
     std::cout<<endl;
     image=image+".jpg";
 
+    m_ordre++;
     add_interfaced_vertex(indice, valeur, 250, 250,image);
 
 }
@@ -378,7 +433,7 @@ void Graph::SAUVEGARDER_GRAPH (string fic1, string fic2)
     else
         cout << "Impossible d'ouvrir le fichier !" << endl;
 
-    ///Sauvegarde des arÍtes
+    ///Sauvegarde des ar√™tes
 
     ofstream fichier2(fic2, ios::trunc);
 
@@ -469,22 +524,22 @@ vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> ta
 {
     vector<bool> c1(m_ordre,0); //composantes connexes directes partant de s
     vector<bool> c2(m_ordre,0); //et indirectes arrivant vers s
-    vector<bool> c(m_ordre,0); //composante fortement connexe = c1 & c2 ‡ retourner
-    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marquÈs ou non
-    int x,y; //numÈros de sommets intermÈdiaires des composantes connexes
-    bool ajoute = 1 ; // boolÈen indiquant si une nouvelle composante connexe est ajoutÈe
+    vector<bool> c(m_ordre,0); //composante fortement connexe = c1 & c2 √† retourner
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqu√©s ou non
+    int x,y; //num√©ros de sommets interm√©diaires des composantes connexes
+    bool ajoute = 1 ; // bool√©en indiquant si une nouvelle composante connexe est ajout√©e
 
     //Le sommet s est rendu connexe
     c1[s] = 1;
     c2[s]=1;
 
-    //Recherche des composantes connexes partant de s ‡ ajouter dans c1 :
+    //Recherche des composantes connexes partant de s √† ajouter dans c1 :
     while(ajoute)
     {
         ajoute = 0;
 
-        //Pour tous les sommets x non marquÈs et connectÈs en partant de s
-        // Marquer chaque sommet x et connecter les sommets non marquÈs y adjacents ‡ x
+        //Pour tous les sommets x non marqu√©s et connect√©s en partant de s
+        // Marquer chaque sommet x et connecter les sommets non marqu√©s y adjacents √† x
         for(x=0; x<m_ordre; x++)
         {
             if(!marques[x] && c1[x])
@@ -502,7 +557,7 @@ vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> ta
         }
     }
 
-    //Recherche des composantes connexes arrivant ‡ s ‡ ajouter dans c2 :
+    //Recherche des composantes connexes arrivant √† s √† ajouter dans c2 :
     for(int i = 0; i<marques.size(); i++)
     {
         marques[i]=0;
@@ -512,8 +567,8 @@ vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> ta
     {
         ajoute = 0;
 
-        //Pour tous les sommets x non marquÈs et connectÈs arrivant ‡ s
-        // Marquer chaque sommet x et connecter les sommets non marquÈs y adjacents ‡ x
+        //Pour tous les sommets x non marqu√©s et connect√©s arrivant √† s
+        // Marquer chaque sommet x et connecter les sommets non marqu√©s y adjacents √† x
         for(x=0; x<m_ordre; x++)
         {
             if(!marques[x] && c2[x])
@@ -544,7 +599,7 @@ vector<bool> Graph::uneComposanteFortementConnexe(int s, vector<vector<bool>> ta
 void Graph::toutesLesComposantesFortementConnexes()
 {
     ComposantesFortementConnexes.clear();
-    /// ////////CrÈation d'une matrice d'adjacence /////////////
+    /// ////////Cr√©ation d'une matrice d'adjacence /////////////
     vector<vector<bool>> tab_adjacence;
     for(int i=0; i<m_ordre; i++)
     {
@@ -559,13 +614,13 @@ void Graph::toutesLesComposantesFortementConnexes()
     }
     /// ///////////////////////////////////////////////////////
 
-    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marquÈs ou non
-    int x, y ; //numÈros de sommets intermÈdiaires comme indices des tableaux
+    vector<bool> marques(m_ordre,0); //tableau dynamique indiquant si les sommets sont marqu√©s ou non
+    int x, y ; //num√©ros de sommets interm√©diaires comme indices des tableaux
     int nb_composantes=0;
 
-    // Pour tous les sommets x non marquÈs
+    // Pour tous les sommets x non marqu√©s
     // Rechercher la composante fortement connexe de x
-    // Marquer chaque sommet x et marquer les sommets y connectÈs ‡ x et non marquÈs
+    // Marquer chaque sommet x et marquer les sommets y connect√©s √† x et non marqu√©s
     for (x=0 ; x<m_ordre ; x++)
     {
         if (!marques[x])
@@ -578,7 +633,7 @@ void Graph::toutesLesComposantesFortementConnexes()
 
             marques[x] = 1 ;
 
-            //On marque tous les sommets connexes ‡ x
+            //On marque tous les sommets connexes √† x
             for(y = 0; y<ComposantesFortementConnexes[nb_composantes].size(); y++)
             {
                 if(ComposantesFortementConnexes[nb_composantes][y] && !marques[y])
@@ -599,7 +654,124 @@ void Graph::toutesLesComposantesFortementConnexes()
             cout << " )" << endl;
         }
     }
-    cout << "Il y a " << ComposantesFortementConnexes.size() << " fortement connexes." << endl;
-
+    cout << "Il y a " << ComposantesFortementConnexes.size() << " composante fortement connexes." << endl;
 }
+
+void Graph::cacher_graph()
+{
+    for(auto &elem : m_vertices)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
+void Graph::afficher_graph()
+{
+    m_vertices_reduit.clear();
+    m_edges_reduit.clear();
+
+    for(auto &elem : m_vertices)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.add_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.add_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
+void Graph::marquerSommets()
+{
+    vector<long> couleurs= {VIOLETCLAIR,JAUNE,VERT,GRISCLAIR,ROSE,ROSESOMBRE,ROUGE,ROUGECLAIR,ROUGESOMBRE,VERTCLAIR,VERTFLUO,BLEU,BLEUSOMBRE,MARRON,MARRONCLAIR,MARRONSOMBRE};
+    for(int i=0; i<ComposantesFortementConnexes.size(); i++)
+    {
+        for(int j=0; j< ComposantesFortementConnexes[i].size(); j++)
+        {
+            if(ComposantesFortementConnexes[i][j])
+            {
+                m_vertices[j].m_interface->m_top_box.set_bg_color(couleurs[i]);
+            }
+        }
+    }
+}
+
+void Graph::demarquerSommets()
+{
+    for(auto &elem : m_vertices)
+        elem.second.m_interface->m_top_box.set_bg_color(BLANC);
+}
+
+void Graph::creer_graph_reduit()
+{
+    for(int i = 0; i<ComposantesFortementConnexes.size(); i++)
+    {
+        int j=0;
+        while(!ComposantesFortementConnexes[i][j])
+        {
+            j++;
+        }
+        add_interfaced_vertex_reduit(i, 50, m_vertices[j].pose_X, m_vertices[j].pose_Y /*,m_vertices[j].m_image*/);
+    }
+
+    for(auto &elem : m_edges)
+    {
+        int x=-1;
+        int y=-1;
+        int from = elem.second.m_from;
+        int to = elem.second.m_to;
+        for(int i = 0; i<ComposantesFortementConnexes.size(); i++)
+        {
+            if(ComposantesFortementConnexes[i][from])
+            {
+                x=i;
+            }
+            if(ComposantesFortementConnexes[i][to])
+            {
+                y=i;
+            }
+        }
+        if(x!=-1 && y!=-1 && x!=y)
+        {
+            add_interfaced_edge_reduit(m_edges_reduit.size()+1,x,y,elem.second.m_weight);
+        }
+    }
+}
+
+void Graph::cacher_graph_reduit()
+{
+    for(auto &elem : m_vertices_reduit)
+    {
+        if(m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_box );
+        }
+    }
+
+    for(auto &elem : m_edges_reduit)
+    {
+        if (m_interface && elem.second.m_interface)
+        {
+            m_interface->m_main_box.remove_child( elem.second.m_interface->m_top_edge );
+        }
+    }
+}
+
 
