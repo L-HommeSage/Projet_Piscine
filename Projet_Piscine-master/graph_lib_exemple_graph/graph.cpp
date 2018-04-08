@@ -126,7 +126,8 @@ void Edge::post_update()
 
     /// Reprendre la valeur du slider dans la donnée m_weight locale
     m_weight = m_interface->m_slider_weight.get_value();
-    if(m_weight==0) m_weight=0.01;
+    if(m_weight==0)
+        m_weight=0.01;
 }
 
 
@@ -268,21 +269,6 @@ void Graph::add_interfaced_edge_reduit(int idx, int id_vert1, int id_vert2, doub
     m_vertices_reduit[id_vert2].m_in.push_back(id_vert1);
 }
 
-void Graph::marquerSommets()
-{
-    vector<long> couleurs={VIOLETCLAIR,JAUNE,VERT,GRISCLAIR,ROSE,ROSESOMBRE,ROUGE,ROUGECLAIR,ROUGESOMBRE,VERTCLAIR,VERTFLUO,BLEU,BLEUSOMBRE,MARRON,MARRONCLAIR,MARRONSOMBRE};
-    for(int i=0; i<ComposantesFortementConnexes.size(); i++)
-    {
-        for(int j=0; j< ComposantesFortementConnexes[i].size(); j++)
-        {
-            if(ComposantesFortementConnexes[i][j])
-            {
-                m_vertices[j].m_interface->m_top_box.set_bg_color(couleurs[i]);
-            }
-        }
-    }
-}
-
 void Graph::effacer_sommet(int eidx)
 {
     copievertex_graph.push_back(m_vertices[eidx]);
@@ -292,7 +278,7 @@ void Graph::effacer_sommet(int eidx)
     {
         if(e.second.m_from==eidx || e.second.m_to==eidx)
         {
-            copieedge_graph.push_back(e.second);
+            //copieedge_graph.push_back(e.second);
             effacer_arete(e.first);
         }
     }
@@ -309,7 +295,6 @@ void Graph::effacer_sommet(int eidx)
 void Graph::effacer_arete(int eidx)
 {
 
-
     Edge &remed=m_edges.at(eidx);
     if (m_interface && remed.m_interface)
     {
@@ -324,12 +309,26 @@ void Graph::effacer_arete(int eidx)
 
 void Graph::ajouter_sommet()
 {
-    int indice;
+    int indice=0;
+    bool indice_est_utilise;
     double valeur;
     string image;
-    std::cout<<"saisir Indice: ";
-    std::cin>>indice;
-    std::cout<<endl;
+    for(int i = 0; i <= m_vertices.size(); i++)
+    {
+        indice_est_utilise = false;
+        for(auto &e : m_vertices)
+        {
+            if(e.first == i)
+            {
+                indice_est_utilise=true;
+            }
+        }
+        if(indice_est_utilise==false)
+        {
+            indice=i;
+            break;
+        }
+    }
     cout<<"saisir valeur: ";
     cin>>valeur;
     std::cout<<endl;
@@ -645,6 +644,9 @@ void Graph::cacher_graph()
 
 void Graph::afficher_graph()
 {
+    m_vertices_reduit.clear();
+    m_edges_reduit.clear();
+
     for(auto &elem : m_vertices)
     {
         if(m_interface && elem.second.m_interface)
@@ -662,13 +664,37 @@ void Graph::afficher_graph()
     }
 }
 
+void Graph::marquerSommets()
+{
+    vector<long> couleurs= {VIOLETCLAIR,JAUNE,VERT,GRISCLAIR,ROSE,ROSESOMBRE,ROUGE,ROUGECLAIR,ROUGESOMBRE,VERTCLAIR,VERTFLUO,BLEU,BLEUSOMBRE,MARRON,MARRONCLAIR,MARRONSOMBRE};
+    for(int i=0; i<ComposantesFortementConnexes.size(); i++)
+    {
+        for(int j=0; j< ComposantesFortementConnexes[i].size(); j++)
+        {
+            if(ComposantesFortementConnexes[i][j])
+            {
+                m_vertices[j].m_interface->m_top_box.set_bg_color(couleurs[i]);
+            }
+        }
+    }
+}
+
+void Graph::demarquerSommets()
+{
+    for(auto &elem : m_vertices)
+        elem.second.m_interface->m_top_box.set_bg_color(BLANC);
+}
+
 void Graph::creer_graph_reduit()
 {
     for(int i = 0; i<ComposantesFortementConnexes.size(); i++)
     {
         int j=0;
-        while(!ComposantesFortementConnexes[i][j]) {j++;}
-        add_interfaced_vertex_reduit(i, 50, m_vertices[j].pose_X, m_vertices[j].pose_Y, m_vertices[j].m_image);
+        while(!ComposantesFortementConnexes[i][j])
+        {
+            j++;
+        }
+        add_interfaced_vertex_reduit(i, 50, m_vertices[j].pose_X, m_vertices[j].pose_Y /*,m_vertices[j].m_image*/);
     }
 
     for(auto &elem : m_edges)
