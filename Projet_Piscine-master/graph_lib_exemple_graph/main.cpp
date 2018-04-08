@@ -16,9 +16,10 @@ int main()
 
     int ok(0);
     int ok2=0;
-        int choix2;
-        int choix;
-        int choix3;
+    int choix2;
+    int choix;
+    int choix3;
+    int run = 0;
 
     /// Vous gardez la main sur la "boucle de jeu"
     /// ( contrairement à des frameworks plus avancés )
@@ -28,21 +29,21 @@ int main()
         /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
         while (ok==0)
         {
-             system("cls");
+            system("cls");
             cout<<"************BIENVENUE************"<<endl;
-        cout<<endl;
-        cout<<"Voulez-vous charger le graph :"<<endl;
-        cout<<"  1: Cycle de l'eau"<<endl;
-        cout<<"  2: Ecosysteme de la foret"<<endl;
-        cout<<"  3: Ecosysteme marin"<<endl;
-        cout<<"  4: Sauvegarde: Cycle de l'eau"<<endl;
-        cout<<"  5: Sauvegarde: Ecosysteme de la foret"<<endl;
-        cout<<"  6: Sauvegarde: Ecosysteme marin"<<endl;
+            cout<<endl;
+            cout<<"Voulez-vous charger le graph :"<<endl;
+            cout<<"  1: Cycle de l'eau"<<endl;
+            cout<<"  2: Ecosysteme de la foret"<<endl;
+            cout<<"  3: Ecosysteme marin"<<endl;
+            cout<<"  4: Sauvegarde: Cycle de l'eau"<<endl;
+            cout<<"  5: Sauvegarde: Ecosysteme de la foret"<<endl;
+            cout<<"  6: Sauvegarde: Ecosysteme marin"<<endl;
 
-        cout<<"Votre choix: ";
-        cin>>choix;
-        cout<<endl;
-        ok++;
+            cout<<"Votre choix: ";
+            cin>>choix;
+            cout<<endl;
+            ok++;
         }
 
 
@@ -89,104 +90,116 @@ int main()
             g->CHARGER_Graph_1("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
             ok2++;
         }
-            g->update();
-            if(ok2==1)
-            {
-                cout<<endl;
-                system("cls");
+        g->update();
+        if(ok2==1)
+        {
+            cout<<endl;
+            system("cls");
             cout<<endl;
             cout<<"( Apuyez sur E ): Ajouter un sommet"<<endl;
             cout<<"( Apuyez sur R ): Ajouter une arete"<<endl;
             cout<<"( Apuyez sur F ): Effacer un sommet"<<endl;
             cout<<"( Apuyez sur S ): Sauvegarder le graph"<<endl;
             cout<<"( Apuyez sur T ): Etudier la forte connexite"<<endl;
+            cout<<"( Apuyez sur U ): Afficher graph reduit"<<endl;
             cout<<"( Apuyez sur Y ): Simulation"<<endl;
             cout<<"( Apuyez sur I ): Retour"<<endl;
 
 
-        cout<<endl;
-        ok2++;
-            }
+            cout<<endl;
+            ok2++;
+        }
 
-            if(key[KEY_E])
+        if(key[KEY_E])
+        {
+            g->ajouter_sommet();
+            ok2=1;
+        }
+        if(key[KEY_R])
+        {
+            g->ajouter_arete();
+            ok2=1;
+        }
+        if(key[KEY_F])
+        {
+            cout<<"Quel indice ?"<<endl;
+            cin>>choix3;
+            g->effacer_sommet(choix3);
+            ok2=1;
+        }
+        if(key[KEY_S])
+        {
+            if(choix==1)
             {
-                g->ajouter_sommet();
-                ok2=1;
-            }
-             if(key[KEY_R])
-            {
-                g->ajouter_arete();
-                ok2=1;
-            }
-             if(key[KEY_F])
-            {
-                cout<<"Quel indice ?"<<endl;
-                cin>>choix3;
-                g->effacer_sommet(choix3);
-                ok2=1;
-            }
-            if(key[KEY_S])
-            {
-                if(choix==1)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_1_nouv.txt","matrice_adj_graph_1_nouv.txt");
-
-                }
-                if(choix==2)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_2_nouv.txt","matrice_adj_graph_2_nouv.txt");
-                }
-                if(choix==3)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
-                }
-                if(choix==4)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_1_nouv.txt","matrice_adj_graph_1_nouv.txt");
-                }
-                if(choix==5)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_2_nouv.txt","matrice_adj_graph_2_nouv.txt");
-                }
-                if(choix==6)
-                {
-                    g->SAUVEGARDER_GRAPH("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
-                }
-                ok2=1;
-            }
-
-            if(key[KEY_I])
-            {
-                for(int i(0);i<g->getordre();i++)
-                {
-                    g->effacer_sommet(i);
-                }
-
-                ok=0;
-                ok2=0;
-            }
-
-            if(key[KEY_Y])
-            {
-
-                g->simulation();
+                g->SAUVEGARDER_GRAPH("graph_1_nouv.txt","matrice_adj_graph_1_nouv.txt");
 
             }
-            if(key[KEY_T])
+            if(choix==2)
             {
-                g->toutesLesComposantesFortementConnexes();
-                g->marquerSommets();
-                g->update();
-                grman::mettre_a_jour();
-                readkey();
-                g->cacher_graph();
-                g->creer_graph_reduit();
-                g->update();
-                grman::mettre_a_jour();
-                readkey();
-                g->cacher_graph_reduit();
-                g->afficher_graph();
+                g->SAUVEGARDER_GRAPH("graph_2_nouv.txt","matrice_adj_graph_2_nouv.txt");
             }
+            if(choix==3)
+            {
+                g->SAUVEGARDER_GRAPH("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
+            }
+            if(choix==4)
+            {
+                g->SAUVEGARDER_GRAPH("graph_1_nouv.txt","matrice_adj_graph_1_nouv.txt");
+            }
+            if(choix==5)
+            {
+                g->SAUVEGARDER_GRAPH("graph_2_nouv.txt","matrice_adj_graph_2_nouv.txt");
+            }
+            if(choix==6)
+            {
+                g->SAUVEGARDER_GRAPH("graph_3_nouv.txt","matrice_adj_graph_3_nouv.txt");
+            }
+            ok2=1;
+        }
+
+        if(key[KEY_I])
+        {
+            for(int i(0); i<g->getordre(); i++)
+            {
+                g->effacer_sommet(i);
+            }
+
+            ok=0;
+            ok2=0;
+        }
+
+        if(key[KEY_Y])
+        {
+            rest(100);
+            if(!run){ run=1; cout << "Simulation en cours..." << endl; }
+            else{ run=0; cout << "Simulation stoppee." << endl;}
+        }
+        if(run)
+        {
+            g->simulation();
+        }
+
+        if(key[KEY_T])
+        {
+            g->toutesLesComposantesFortementConnexes();
+            g->marquerSommets();
+            g->update();
+            grman::mettre_a_jour();
+            readkey();
+            g->demarquerSommets();
+
+        }
+        if(key[KEY_U])
+        {
+            g->cacher_graph();
+            g->creer_graph_reduit();
+            g->update();
+            grman::mettre_a_jour();
+            readkey();
+            g->cacher_graph_reduit();
+            g->afficher_graph();
+        }
+
 
         grman::mettre_a_jour();
     }
