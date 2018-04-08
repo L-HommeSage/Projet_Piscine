@@ -9,7 +9,7 @@ int main()
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
 
-    /// Le nom du répertoire où se trouvent les images à charger
+    /// Le nom du rÃ©pertoire oÃ¹ se trouvent les images Ã  charger
     grman::set_pictures_path("pics");
 
     Graph* g = new Graph();
@@ -22,11 +22,11 @@ int main()
     int run = 0;
 
     /// Vous gardez la main sur la "boucle de jeu"
-    /// ( contrairement à des frameworks plus avancés )
+    /// ( contrairement Ã  des frameworks plus avancÃ©s )
     while ( !key[KEY_ESC] )
     {
 
-        /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
+        /// Il faut appeler les mÃ©thodes d'update des objets qui comportent des widgets
         while (ok==0)
         {
             system("cls");
@@ -103,6 +103,7 @@ int main()
             cout<<"( Apuyez sur T ): Etudier la forte connexite"<<endl;
             cout<<"( Apuyez sur U ): Afficher graph reduit"<<endl;
             cout<<"( Apuyez sur Y ): Simulation"<<endl;
+            cout<<"( Apuyez sur P ): Etude de la k-connexite"<<endl;
             cout<<"( Apuyez sur I ): Retour"<<endl;
 
 
@@ -176,7 +177,7 @@ int main()
         }
         if(run)
         {
-            g->simulation();
+            g->Marche_ecosysteme();
         }
 
         if(key[KEY_T])
@@ -185,8 +186,10 @@ int main()
             g->marquerSommets();
             g->update();
             grman::mettre_a_jour();
+            cout << "Appuyez sur une touche pour continuer..." << endl;
             readkey();
             g->demarquerSommets();
+            ok2=1;
 
         }
         if(key[KEY_U])
@@ -194,10 +197,23 @@ int main()
             g->cacher_graph();
             g->creer_graph_reduit();
             g->update();
-            grman::mettre_a_jour();
+            //grman::mettre_a_jour();
+            cout << "Appuyez sur une touche pour continuer..." << endl;
             readkey();
             g->cacher_graph_reduit();
             g->afficher_graph();
+            ok2=1;
+        }
+        if(key[KEY_P])
+        {
+            int nb_solutions=g->trouver_k_plets_solutions();
+            for(int i = 0; i<nb_solutions; i++)
+            {
+                g->afficher_solutions(i);
+                g->update();
+                grman::mettre_a_jour();
+                readkey();
+            }
         }
 
 
