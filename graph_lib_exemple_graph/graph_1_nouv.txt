@@ -1,5 +1,6 @@
-4
-0 51.8993 539 416 pollution.jpg
-1 30.7807 665 201 soleil.jpg
-2 3.37791 177 187 precipitation.jpg
-3 15.4929 418 191 vent.jpg
+5
+0 30 115 -1 pollution.jpg
+2 50 278 233 precipitation.jpg
+3 0 588 278 evaporation.jpg
+4 100 771 480 vent.jpg
+5 35 164 451 condensation.jpg

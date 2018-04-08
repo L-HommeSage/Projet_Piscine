@@ -1,14 +1,14 @@
 13
-0 0 156 1 peche.jpg
-1 0 377 1 cargo.jpg
-2 0 567 1 oiseaux.jpg
-3 22.4349 773 211 soleil.jpg
-4 0 114 197 saumon.jpg
-5 1.84187 270 196 thon.jpg
-6 16.3611 707 416 algue.jpg
-7 0.616861 443 210 morue.jpg
-8 3.65391 630 171 sprat.jpg
-9 8.88357 317 350 calanus_finmarchicus.jpg
-10 3.94735 537 348 dinoflagellates.jpg
-11 1.94711 402 485 diatoms.jpg
-12 0 112 490 small_copepods.jpg
+0 50 34 12 peche.jpg
+1 50 277 6 cargo.jpg
+2 50 534 22 oiseaux.jpg
+3 50 745 1 soleil.jpg
+4 50 29 202 saumon.jpg
+5 50 236 211 thon.jpg
+6 50 771 284 algue.jpg
+7 50 36 417 morue.jpg
+8 50 401 281 sprat.jpg
+9 50 566 263 calanus_finmarchicus.jpg
+10 50 633 613 dinoflagellates.jpg
+11 50 489 490 diatoms.jpg
+12 50 44 608 small_copepods.jpg

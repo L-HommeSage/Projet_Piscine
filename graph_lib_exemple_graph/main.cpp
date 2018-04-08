@@ -9,7 +9,7 @@ int main()
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
 
-    /// Le nom du rÃ©pertoire oÃ¹ se trouvent les images Ã  charger
+    /// Le nom du répertoire où se trouvent les images à charger
     grman::set_pictures_path("pics");
 
     Graph* g = new Graph();
@@ -22,11 +22,11 @@ int main()
     int run = 0;
 
     /// Vous gardez la main sur la "boucle de jeu"
-    /// ( contrairement Ã  des frameworks plus avancÃ©s )
+    /// ( contrairement à des frameworks plus avancés )
     while ( !key[KEY_ESC] )
     {
 
-        /// Il faut appeler les mÃ©thodes d'update des objets qui comportent des widgets
+        /// Il faut appeler les méthodes d'update des objets qui comportent des widgets
         while (ok==0)
         {
             system("cls");
@@ -176,7 +176,7 @@ int main()
         }
         if(run)
         {
-            g->Marche_ecosysteme();
+            g->simulation();
         }
 
         if(key[KEY_T])
